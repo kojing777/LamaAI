@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import { IoSearch } from "react-icons/io5";
 
 const Sidebar = () => {
   const { chats, theme, setSelectedChat, setTheme, user } = useAppContext();
@@ -17,6 +18,20 @@ const Sidebar = () => {
       <button className="flex justify-center items-center w-full py-2 mt-10 text-white bg-gradient-to-r from-[#a456f7] to-[#3d81f6] text-sm rounded-md cursor-pointer">
         <span className="mr-2 text-xl">+</span> New Chat
       </button>
+
+      {/* search conversation */}
+      <div className="flex items-center gap-2 p-3 mt-4 border border-gray-600 dark:border-white/20 rounded-md">
+        <IoSearch className="w-4 dark:invert" />
+
+        {/* <img src={assets.search_icon} alt="" className="w-4 not-dark:invert" /> */}
+        <input
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+          type="text"
+          placeholder="Search Conversation"
+          className="text-xs placeholder:text-gray-400 outline-none"
+        />
+      </div>
     </div>
   );
 };
