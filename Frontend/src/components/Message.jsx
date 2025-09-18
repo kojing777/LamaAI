@@ -1,6 +1,9 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import moment from "moment";
+import markdown from "react-markdown";
+import Markdown from "react-markdown";
+
 
 const Message = ({ Message }) => {
   return (
@@ -25,7 +28,8 @@ const Message = ({ Message }) => {
             />
           ) : (
             <div className="text-sm dark:text-primary reset-tw">
-              {Message.content}
+              {/* <Markdown> chai bold or marking word haru ko lagi use hunxa */}
+              <Markdown>{Message.content}</Markdown>
             </div>
           )}
           <span className="text-xs text-gray dark:text-[#b1a6c0]">
