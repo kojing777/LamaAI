@@ -10,7 +10,7 @@ const ChatBox = () => {
   const [loading, setLoading] = useState(false);
 
   const [prompt, setPrompt] = useState("");
-  const [mode , setMode] = useState("text");
+  const [mode, setMode] = useState("text");
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmit = (e) => {
@@ -55,19 +55,51 @@ const ChatBox = () => {
           </div>
         )}
       </div>
+      {mode === "image" && (
+        <label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
+          <p className="text-xs">Publish Generated Image to Community</p>
+          <input
+            type="checkbox"
+            className="cursor-pointer"
+            checked={isPublished}
+            onChange={(e) => setIsPublished(e.target.checked)}
+          />
+        </label>
+      )}
       {/* prompt input box */}
-      <form className="bg-primary/20 dark:bg-[#57317c]/30 border border-primary dark:border-[#80609f]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center" onSubmit={onSubmit}>
-        <select onChange={(e)=>setMode(e.target.value)} value={mode} className="text-sm pl-3 pr-2 outline-none">
-          <option className="dark:bg-purple-900" value="text">text</option>
-          <option className="dark:bg-purple-900" value="image">image</option>
+      <form
+        className="bg-primary/20 dark:bg-[#57317c]/30 border border-primary dark:border-[#80609f]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center"
+        onSubmit={onSubmit}
+      >
+        <select
+          onChange={(e) => setMode(e.target.value)}
+          value={mode}
+          className="text-sm pl-3 pr-2 outline-none"
+        >
+          <option className="dark:bg-purple-900" value="text">
+            text
+          </option>
+          <option className="dark:bg-purple-900" value="image">
+            image
+          </option>
         </select>
-        <input type="text" placeholder="Type your message here..." value={prompt} onChange={(e) => setPrompt(e.target.value)} className="flex-1 w-full text-sm outline-none" required />
+        <input
+          type="text"
+          placeholder="Type your message here..."
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          className="flex-1 w-full text-sm outline-none"
+          required
+        />
         <button disabled={loading} type="submit" className="ml-3">
-          <img className="w-8 cursor-pointer" src={loading ? assets.stop_icon : assets.send_icon} alt="" />
+          <img
+            className="w-8 cursor-pointer"
+            src={loading ? assets.stop_icon : assets.send_icon}
+            alt=""
+          />
         </button>
       </form>
     </div>
-    // prompt input area
   );
 };
 
