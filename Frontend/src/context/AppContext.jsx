@@ -16,13 +16,13 @@ export const AppContextProvider = ({ children }) => {
   };
 
   const fetchUsersChats = async () => {
-    setChats(dummyChats)
+    setChats(dummyChats);
     setSelectedChat(dummyChats[0]);
   };
-useEffect(() => {
+  useEffect(() => {
     if (user) {
       fetchUsersChats();
-    }else {
+    } else {
       setChats([]);
       setSelectedChat(null);
     }
@@ -52,11 +52,7 @@ useEffect(() => {
     theme,
     setTheme,
   };
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const useAppContext = () => useContext(AppContext);
