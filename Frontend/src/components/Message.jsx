@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import moment from "moment";
 
 const Message = ({ Message }) => {
   return (
@@ -9,7 +10,7 @@ const Message = ({ Message }) => {
           <div className="flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#57317c]/30 border border-[#80609f]/30 rounded-md max-w-2xl">
             <p className="text-sm dark:text-primary">{Message.content}</p>
             <span className="text-xs text-gray dark:text-[#b1a6c0]">
-              {Message.timestamp}
+              {moment(Message.timestamp).format("MMMM Do YYYY, h:mm:ss a")}
             </span>
           </div>
           <img src={assets.user_icon} className="w-8 rounded-full" alt="" />
@@ -28,7 +29,8 @@ const Message = ({ Message }) => {
             </div>
           )}
           <span className="text-xs text-gray dark:text-[#b1a6c0]">
-            {Message.timestamp}
+            {/* maile moment use ma date xuttai format ma use gareko xu so paxi change garnu paryo vane 1.25 ma herni*/}
+            {moment(Message.timestamp).format("MMMM Do YYYY, h:mm:ss a")}
           </span>
         </div>
       )}
