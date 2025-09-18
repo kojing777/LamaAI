@@ -50,16 +50,17 @@ const Sidebar = () => {
               key={chat._id}
               className="p-2 px-4 dark:bg-[#57317c]/10 border border-gray-300 dark:border-[#80609f]/15 rounded-md cursor-pointer flex justify-between group"
             >
-              <div>
-                <p className="truncate w-full">
+              <div className="truncate w-full">
+                <p>
                   {chat.messages.length > 0
                     ? chat.messages[0].content.slice(0, 32)
                     : chat.name}
-                  <p className="text-sm text-gray-500 dark:text-[#b1a6c0]">
-                    {moment(chat.updatedAt).fromNow()}
-                  </p>
+                </p>
+                <p className="text-sm text-gray-500 dark:text-[#b1a6c0]">
+                  {moment(chat.updatedAt).fromNow()}
                 </p>
               </div>
+
               <img
                 src={assets.bin_icon}
                 alt=""
@@ -74,7 +75,7 @@ const Sidebar = () => {
         onClick={() => {
           navigate("/community");
         }}
-        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-103 transition-all"
+        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
       >
         <img
           src={assets.gallery_icon}
@@ -91,7 +92,7 @@ const Sidebar = () => {
         onClick={() => {
           navigate("/credits");
         }}
-        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-103 transition-all"
+        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
       >
         <img src={assets.diamond_icon} className="w-4.5 dark:invert" alt="" />
         <div className="flex flex-col text-sm">
@@ -108,7 +109,7 @@ const Sidebar = () => {
         </div>
         <label className="relative inline-flex cursor-pointer ">
           <input
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
             type="checkbox"
             className="sr-only peer"
             checked={theme === "dark"}
