@@ -9,7 +9,11 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
     useAppContext();
   const [search, setSearch] = useState("");
   return (
-    <div className={`flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-r border-[#80609f]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${!isMenuOpen && 'max-md:-translate-x-full'}`}>
+    <div
+      className={`flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-r border-[#80609f]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${
+        !isMenuOpen && "max-md:-translate-x-full"
+      }`}
+    >
       {/* logo */}
       <img
         src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
@@ -47,6 +51,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           )
           .map((chat) => (
             <div
+            onClick={() => {navigate("/"); setSelectedChat(chat); setIsMenuOpen(false);}}
               key={chat._id}
               className="p-2 px-4 dark:bg-[#57317c]/10 border border-gray-300 dark:border-[#80609f]/15 rounded-md cursor-pointer flex justify-between group"
             >
@@ -73,7 +78,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {/* Community images */}
       <div
         onClick={() => {
-          navigate("/community");
+          navigate("/community"); setIsMenuOpen(false);
         }}
         className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
       >
@@ -90,7 +95,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {/* Credit Purchase Option */}
       <div
         onClick={() => {
-          navigate("/credits");
+          navigate("/credits"); setIsMenuOpen(false);
         }}
         className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
       >
