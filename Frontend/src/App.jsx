@@ -5,14 +5,18 @@ import Credits from "./pages/Credits";
 import Community from "./pages/Community";
 import { useState } from "react";
 import { assets } from "./assets/assets";
-import './assets/prism.css'
+import "./assets/prism.css";
 import Loading from "./pages/Loading";
+import { useAppContext } from "./context/AppContext";
+import Login from "./pages/Login";
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {pathname} = useLocation();
+  const { user } = useAppContext();
 
-  if(pathname === '/loading') return <Loading />
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  if (pathname === "/loading") return <Loading />;
   return (
     <>
       {!isMenuOpen && (
@@ -22,16 +26,22 @@ const App = () => {
           onClick={() => setIsMenuOpen(true)}
         />
       )}
-      <div className="dark:bg-gradient-to-b from-[#242124] to-[#000000] dark:text-white font-outfit">
-        <div className="flex h-screen w-screen">
-          <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-          <Routes>
-            <Route path="/" element={<ChatBox />} />
-            <Route path="/credits" element={<Credits />} />
-            <Route path="/community" element={<Community />} />
-          </Routes>
+      {user ? (
+        <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
+          <div className="flex h-screen w-screen">
+            <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            <Routes>
+              <Route path="/" element={<ChatBox />} />
+              <Route path="/credits" element={<Credits />} />
+              <Route path="/community" element={<Community />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <Login />
+        </div>
+      )}
     </>
   );
 };
