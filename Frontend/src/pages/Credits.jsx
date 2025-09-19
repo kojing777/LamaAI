@@ -33,26 +33,27 @@ const Credits = () => {
                 : "bg-white dark:bg-transparent"
             }`}
           >
-            
             <div className="flex-1">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                 {plan.name}
               </h3>
               <p className="text-2xl font-bold text-gray-900 dark:text-purple-300 mb-4">
                 ${plan.price}
-                <span>{''}/{plan.credits} credits</span>
+                <span>
+                  {""}/{plan.credits} credits
+                </span>
               </p>
               <ul className="list-disc list-inside text-sm text-gray-700 dark:text-purple-200 space-y-1">
                 {plan.features.map((feature, index) => (
-                  <li
-                    key={index}
-                    className="text-gray-600 dark:text-gray-400"
-                  >
+                  <li key={index} className="text-gray-600 dark:text-gray-400">
                     {feature}
                   </li>
                 ))}
               </ul>
             </div>
+            <button className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer">
+              Buy Now
+            </button>
           </div>
         ))}
       </div>
