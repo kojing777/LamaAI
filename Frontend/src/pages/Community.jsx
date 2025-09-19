@@ -20,8 +20,8 @@ const Community = () => {
     )
   }
   return (
-    <div>
-
+    <div className='p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-x-scroll'>
+      <h2 className='text-xl font-semibold mb-6 text-gray-800 dark:text-purple-100'>Community Images</h2>
     </div>
   )
 }
