@@ -42,7 +42,7 @@ const Credits = () => {
                 ${plan.price}
                 <span>{''}/{plan.credits} credits</span>
               </p>
-              <ul>
+              <ul className="list-disc list-inside text-sm text-gray-700 dark:text-purple-200 space-y-1">
                 {plan.features.map((feature, index) => (
                   <li
                     key={index}
