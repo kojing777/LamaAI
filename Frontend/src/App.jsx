@@ -38,7 +38,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="bg-gradient-to-b from-[#242124] to-[#000000] h-screen flex items-center justify-center w-screen">
           <Login />
         </div>
       )}
