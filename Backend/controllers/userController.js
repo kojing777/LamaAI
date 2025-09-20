@@ -25,3 +25,11 @@ export const registerUser = async (req, res) => {
 }
 
 //API to login a user
+export const loginUser = async (req, res) => {
+        const { email, password } = req.body;
+        try {
+                
+        } catch (error) {
+                
+        }
+}
