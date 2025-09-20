@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import connectDB from './config/db.js';
+import userRouter from './routes/userRoutes.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello from Backend !!');
 });
+app.use('/api/user', userRouter);
 
 //Port
 const PORT = process.env.PORT || 3000;
