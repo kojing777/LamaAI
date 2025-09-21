@@ -57,7 +57,10 @@ export const imageMessageController = async (req, res) => {
             content: prompt,
             timestamp: Date.now()
         });
-        
+        const encodedPrompt = encodeURIComponent(prompt);
+
+        //construct imagekit api generation url
+        const generatedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}/ik-genimg-prompt-/${encodedPrompt}/quickgpt/${Date.now()}.png?tr=w-800,h-800`;
 
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
