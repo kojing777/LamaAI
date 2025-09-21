@@ -16,4 +16,4 @@ const openai = new OpenAI({
 //     ],
 // });
 
-console.log(response.choices[0].message);
+export default openai;

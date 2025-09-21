@@ -1,7 +1,8 @@
-import imagekit from "../config/imagekit.js";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import axios from "axios";
+import openai from "../config/openai.js";
+import imagekit from "../config/imagekit.js";
 
 
 //text-based ai chat maessage controller
@@ -61,24 +62,46 @@ export const imageMessageController = async (req, res) => {
             content: prompt,
             timestamp: Date.now()
         });
+
+        //encode prompt
         const encodedPrompt = encodeURIComponent(prompt);
 
         //construct imagekit api generation url
         const generatedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}/ik-genimg-prompt-/${encodedPrompt}/quickgpt/${Date.now()}.png?tr=w-800,h-800`;
+        console.log('Generated ImageKit URL:', generatedImageUrl);
 
-        //trigger generation by calling the imagekit
-        const aiImageResponse = await axios.get(generatedImageUrl, { responseType: 'arraybuffer' });
-        // console.log("AI IMAGE RESPONSE", aiImageResponse.data);
+        let aiImageResponse;
+        try {
+            aiImageResponse = await axios.get(generatedImageUrl, { responseType: 'arraybuffer' });
+            console.log('AI Image Response Status:', aiImageResponse.status);
+        } catch (err) {
+            console.error('Error fetching image from ImageKit:', err.response ? err.response.data : err.message);
+            return res.status(500).json({ success: false, message: 'Failed to generate image', error: err.response ? err.response.data : err.message });
+        }
 
         //convert to base64
-        const base64Image = `data:image/png;base64,${Buffer.from(aiImageResponse.data, 'binary').toString('base64')}`;
+        let base64Image;
+        try {
+            base64Image = `data:image/png;base64,${Buffer.from(aiImageResponse.data, 'binary').toString('base64')}`;
+        } catch (err) {
+            console.error('Error converting image to base64:', err.message);
+            return res.status(500).json({ success: false, message: 'Failed to convert image to base64', error: err.message });
+        }
 
         //upload image to imagekit media library
-        const uploadResponse = await imagekit.upload({
-            file: base64Image,
-            fileName: `quickgpt/${Date.now()}.png`,
-            folder: 'quickgpt'
-        });
+        let uploadResponse;
+        try {
+            uploadResponse = await imagekit.upload({
+                file: base64Image,
+                fileName: `quickgpt/${Date.now()}.png`,
+                folder: 'quickgpt'
+            });
+            console.log('ImageKit Upload Response:', uploadResponse);
+        } catch (err) {
+            console.error('Error uploading to ImageKit:', err.message);
+            return res.status(500).json({ success: false, message: 'Failed to upload image to ImageKit', error: err.message });
+        }
+
         const reply = {
             isImage: true,
             role: "assistant",
@@ -92,6 +115,7 @@ export const imageMessageController = async (req, res) => {
 
         await User.updateOne({ _id: userId }, { $inc: { credits: -2 } });
     } catch (error) {
+        console.error('General error in imageMessageController:', error.message);
         res.status(500).json({ success: false, message: error.message });
     }
 }
