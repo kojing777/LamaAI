@@ -8,9 +8,13 @@ import axios from "axios";
 export const textMessageController = async (req, res) => {
     try {
         const userId = req.user._id;
+        if (req.user.credits < 1) {
+            return res.status(403).json({ success: false, message: "Credit pugena raja" });
+        }
         const { chatId, prompt } = req.body;
         // Process the text message (e.g., save to database, send to AI service, etc.)
         // For demonstration, we'll just return the received message
+
         const chat = await Chat.findOne({ userId, _id: chatId });
         chat.messages.push({
             isImage: false,
