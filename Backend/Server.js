@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import userRouter from './routes/userRoutes.js';
+import chatRouter from './routes/chatRoutes.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
   res.send('Hello from Backend !!');
 });
 app.use('/api/user', userRouter);
+app.use('/api/chat', chatRouter);
 
 //Port
 const PORT = process.env.PORT || 3000;
