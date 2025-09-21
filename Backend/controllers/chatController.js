@@ -1,3 +1,4 @@
+import chat from "../models/Chat";
 
 
 
@@ -17,3 +18,17 @@ export const createChat = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 }
+
+//Api Controller for getting all chats of a user
+export const getChats = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const chats = await chat.find({ userId }).sort({ updatedAt: -1 });
+
+        res.json({ success: true, chats });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+//Api Controller for deleting a chat
