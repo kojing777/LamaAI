@@ -8,4 +8,7 @@ const transactionSchema = new mongoose.Schema({
     isPaid: { type: Boolean, default: false }
 }, { timestamps: true });
 
-export default mongoose.model("Transaction", transactionSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
+
+
+export default Transaction;
