@@ -35,6 +35,48 @@ export const getPlans = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
+
+//API to verify transaction status
+export const verifyTransaction = async (req, res) => {
+    try {
+        const { transactionId } = req.query;
+        
+        if (!transactionId) {
+            return res.json({ success: false, message: "Transaction ID is required" });
+        }
+
+        const transaction = await Transaction.findById(transactionId);
+        
+        if (!transaction) {
+            return res.json({ success: false, message: "Transaction not found" });
+        }
+
+        if (transaction.isPaid) {
+            return res.json({ 
+                success: true, 
+                message: "Payment successful", 
+                transaction: {
+                    id: transaction._id,
+                    isPaid: transaction.isPaid,
+                    amount: transaction.amount,
+                    credits: transaction.credits,
+                    planId: transaction.planId
+                }
+            });
+        } else {
+            return res.json({ 
+                success: false, 
+                message: "Payment pending or failed",
+                transaction: {
+                    id: transaction._id,
+                    isPaid: transaction.isPaid
+                }
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 //exporting plans for external use
 export const purchasePlan = async (req, res) => {
@@ -72,8 +114,8 @@ export const purchasePlan = async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: `${origin}/?payment=success&transactionId=${transaction._id}`,
-            cancel_url: `${origin}`,
+            success_url: `${origin}/credits?payment=success&transactionId=${transaction._id}`,
+            cancel_url: `${origin}/credits?payment=cancelled`,
             metadata: {
                 transactionId: transaction._id.toString(),
                 appId:'quickgpt'

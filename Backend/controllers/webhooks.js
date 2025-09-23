@@ -18,15 +18,29 @@ export const StripeWebhook = async (req, res) => {
         switch (event.type) {
             case 'payment_intent.succeeded':{
                 const paymentIntent = event.data.object;
+                console.log('Processing payment_intent.succeeded for:', paymentIntent.id);
+                
                 const sessionList = await stripe.checkout.sessions.list({
                     payment_intent: paymentIntent.id,
                 });
 
+                if (sessionList.data.length === 0) {
+                    console.log('No checkout session found for payment intent:', paymentIntent.id);
+                    return res.json({ received: true, message: 'No checkout session found' });
+                }
+
                 const session = sessionList.data[0];
                 const { transactionId, appId } = session.metadata;
 
+                console.log('Session metadata:', { transactionId, appId });
+
                 if (appId === 'quickgpt') {
                     const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false });
+
+                    if (!transaction) {
+                        console.log('Transaction not found or already paid:', transactionId);
+                        return res.json({ received: true, message: 'Transaction not found or already paid' });
+                    }
 
                     //update credits in user account and mark transaction as paid
                     await User.updateOne({ _id: transaction.userId }, { $inc: { credits: transaction.credits } });
@@ -34,9 +48,11 @@ export const StripeWebhook = async (req, res) => {
                     //mark transaction as paid
                     transaction.isPaid = true;
                     await transaction.save();
+
+                    console.log('Payment processed successfully for transaction:', transactionId);
                 }
                 else {
-                    return response.json({ received: true, message: 'Ignored event: Invalid App ID' });
+                    return res.json({ received: true, message: 'Ignored event: Invalid App ID' });
                 }
                 break;
             }
