@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../context/appContext";
 import { assets } from "../assets/assets";
 import Message from "./Message";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
   const containerRef = useRef(null);
-  const { selectedChat, theme, user, axios, setUser } = useAppContext();
+  const { selectedChat, theme, user, axios, setUser, token } = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,21 +15,51 @@ const ChatBox = () => {
   const [mode, setMode] = useState("text");
   const [isPublished, setIsPublished] = useState(false);
 
-  const onSubmit = (e) => {
-   
+  const onSubmit = async (e) => {
     try {
-       e.preventDefault();
-       if (!user) {
-         alert("Please login to continue");
-         return;
-       }
-    } catch (error) {
-      
-    }
-    if (!prompt) return;
+      e.preventDefault();
+      if (!user) return toast("Please login to continue");
+      setLoading(true);
+      const promptCopy = prompt;
+      setPrompt("");
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "user",
+          content: prompt,
+          timestamp: Date.now(),
+          isImage: false,
+        },
+      ]);
+      const { data } = await axios.post(
+        `/api/message/${mode}`,
+        {
+          prompt,
+          chatId: selectedChat._id,
+          isPublished,
+        },
+        { headers: { Authorization: token } }
+      );
+      if (data.success) {
+        setMessages((prev) => [...prev, data.reply]);
 
-    setLoading(true);
-    // Call your API or function to send the message
+        //decrease user credits
+        if (mode === "text") {
+          setUser((prev) => ({ ...prev, credits: prev.credits - 1 }));
+        }
+        if (mode === "image") {
+          setUser((prev) => ({ ...prev, credits: prev.credits - 2 }));
+        }
+      } else {
+        toast.error(data.message);
+        setPrompt(promptCopy);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setPrompt("");
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
