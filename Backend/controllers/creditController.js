@@ -1,7 +1,6 @@
 import Transaction from "../models/Transaction.js"
 import Stripe from "stripe";
 
-
 const plans = [
     {
         _id: "basic",
@@ -55,7 +54,7 @@ export const purchasePlan = async (req, res) => {
             isPaid: false
         });
 
-        const {origin} = req.headers;
+        const { origin } = req.headers;
 
         //create stripe checkout session
         const session = await stripe.checkout.sessions.create({
@@ -78,43 +77,14 @@ export const purchasePlan = async (req, res) => {
             cancel_url: `${origin}`,
             metadata: {
                 transactionId: transaction._id.toString(),
-                appId:'quickgpt'
+                appId: 'quickgpt'
             },
             expires_at: Math.floor(Date.now() / 1000) + 30 * 60 // 30 minutes from now
         });
 
-        res.json({ success: true,url: session.url});
+        res.json({ success: true, url: session.url });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 
 }
-
-// API controller to verify transaction status
-export const verifyTransaction = async (req, res) => {
-    try {
-        const { transactionId } = req.params;
-        const userId = req.user._id;
-        
-        const transaction = await Transaction.findOne({ 
-            _id: transactionId, 
-            userId: userId 
-        });
-        
-        if (!transaction) {
-            return res.json({ success: false, message: "Transaction not found" });
-        }
-        
-        res.json({ 
-            success: true, 
-            isPaid: transaction.isPaid,
-            credits: transaction.credits,
-            amount: transaction.amount,
-            planId: transaction.planId,
-            createdAt: transaction.createdAt
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
-

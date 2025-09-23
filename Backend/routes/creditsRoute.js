@@ -1,11 +1,11 @@
 import express from 'express';
-import { getPlans, purchasePlan, verifyTransaction } from '../controllers/creditController.js';
+import { getPlans, purchasePlan } from '../controllers/creditController.js';
 import { protect } from '../middlewares/auth.js';
 
 const creditsRouter = express.Router();
 
 creditsRouter.get('/plan', getPlans);
 creditsRouter.post('/purchase', protect, purchasePlan);
-creditsRouter.get('/verify/:transactionId', protect, verifyTransaction);
+
 
 export default creditsRouter;
