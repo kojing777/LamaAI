@@ -36,6 +36,7 @@ export const getPlans = async (req, res) => {
     }
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 //exporting plans for external use
 export const purchasePlan = async (req, res) => {
     try {
@@ -56,6 +57,7 @@ export const purchasePlan = async (req, res) => {
 
         const {origin} = req.headers;
 
+        //create stripe checkout session
         const session = await stripe.checkout.sessions.create({
 
             line_items: [

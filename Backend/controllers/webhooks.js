@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
+import { response } from "express";
 
 export const StripeWebhook = async (req, res) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -10,13 +11,12 @@ export const StripeWebhook = async (req, res) => {
     try {
         event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (error) {
-        console.error(`Webhook Error: ${error.message}`);
         return res.status(400).send(`Webhook Error: ${error.message}`);
     }
 
     try {
         switch (event.type) {
-            case 'payment_intent.succeeded':{
+            case 'payment_intent.succeeded': {
                 const paymentIntent = event.data.object;
                 const sessionList = await stripe.checkout.sessions.list({
                     payment_intent: paymentIntent.id,
@@ -36,17 +36,18 @@ export const StripeWebhook = async (req, res) => {
                     await transaction.save();
                 }
                 else {
-                    return res.json({ received: true, message: 'Ignored event: Invalid App ID' });
+                    return res.json({ received: true, message: 'Ignored event: Invalid app' });
                 }
                 break;
             }
             default:
-                console.log('Unhandled event type', event.type);
+                console.log('Unhandled event type:', event.type);
+                break;
         }
-    
+
         res.json({ received: true });
     } catch (error) {
         console.error(`Error handling webhook event: ${error.message}`);
-        return res.status(500).send(`Webhook Error: ${error.message}`);
+         response.status(500).send(`Webhook Error: ${error.message}`);
     }
 }
