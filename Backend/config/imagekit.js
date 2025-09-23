@@ -6,7 +6,4 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
-// Test the upload function
-console.log('Upload function available:', typeof imagekit.upload?.upload === 'function');
-
 export default imagekit;
