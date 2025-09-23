@@ -5,7 +5,7 @@ import Message from "./Message";
 
 const ChatBox = () => {
   const containerRef = useRef(null);
-  const { selectedChat, theme } = useAppContext();
+  const { selectedChat, theme, user, axios, setUser } = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
