@@ -72,7 +72,7 @@ export const purchasePlan = async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: `${origin}/loading`,
+            success_url: `${origin}/?payment=success&transactionId=${transaction._id}`,
             cancel_url: `${origin}`,
             metadata: {
                 transactionId: transaction._id.toString(),
