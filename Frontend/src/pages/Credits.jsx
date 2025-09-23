@@ -7,26 +7,40 @@ const Credits = () => {
   const [plans, setPlans] = useState([]);
   const { token, axios } = useAppContext();
 
- const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-const fetchPlans = useCallback(async () => {
-  try {
-    const { data } = await axios.get("/api/credit/plan", {
-      headers: { Authorization: token },
-    });
-    if (data.success) {
-      setPlans(data.plans);
-    } else {
-      toast.error(data.message || "Failed to fetch plans");
+  const fetchPlans = useCallback(async () => {
+    try {
+      const { data } = await axios.get("/api/credit/plan", {
+        headers: { Authorization: token },
+      });
+      if (data.success) {
+        setPlans(data.plans);
+      } else {
+        toast.error(data.message || "Failed to fetch plans");
+      }
+    } catch (error) {
+      toast.error(error.message || "An error occurred while fetching plans");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    toast.error(error.message || "An error occurred while fetching plans");
-  } finally {
-    setLoading(false);
-  }
-}, [axios, token]);
+  }, [axios, token]);
 
-
+  const purchasePlan = async (planId) => {
+    try {
+      const {data} = await axios.post("/api/credit/purchase", { planId }, {
+        headers: { Authorization: token },
+      });
+      if (data.success) {
+        window.location.href = data.url; // Redirect to payment URL
+     
+      } else {
+        toast.error(data.message || "Failed to purchase plan");
+      }
+    } catch (error) {
+      toast.error(error.message || "An error occurred while purchasing plan");
+    }
+  };
   useEffect(() => {
     fetchPlans();
   }, [fetchPlans]);
@@ -67,7 +81,11 @@ const fetchPlans = useCallback(async () => {
                 ))}
               </ul>
             </div>
-            <button className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer">
+            <button onClick={() => toast.promise(purchasePlan(plan._id), {
+              loading: 'Processing...',
+              success: 'Plan purchased successfully!',
+              error: 'Failed to purchase plan'
+            })} className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer">
               Buy Now
             </button>
           </div>
