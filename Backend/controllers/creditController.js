@@ -1,4 +1,5 @@
 import Transaction from "../models/Transaction.js"
+import User from "../models/User.js"
 import Stripe from "stripe";
 
 
@@ -73,6 +74,80 @@ export const verifyTransaction = async (req, res) => {
                 }
             });
         }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+//API to manually verify and update payment status (for testing/debugging)
+export const manualVerifyPayment = async (req, res) => {
+    try {
+        const { transactionId } = req.body;
+        
+        if (!transactionId) {
+            return res.json({ success: false, message: "Transaction ID is required" });
+        }
+
+        const transaction = await Transaction.findById(transactionId);
+        
+        if (!transaction) {
+            return res.json({ success: false, message: "Transaction not found" });
+        }
+
+        if (transaction.isPaid) {
+            return res.json({ success: false, message: "Transaction already marked as paid" });
+        }
+
+        // Update credits in user account
+        await User.updateOne(
+            { _id: transaction.userId }, 
+            { $inc: { credits: transaction.credits } }
+        );
+
+        // Mark transaction as paid
+        transaction.isPaid = true;
+        await transaction.save();
+
+        // Get updated user info
+        const updatedUser = await User.findById(transaction.userId);
+
+        return res.json({ 
+            success: true, 
+            message: "Payment manually verified and credits added", 
+            transaction: {
+                id: transaction._id,
+                isPaid: transaction.isPaid,
+                amount: transaction.amount,
+                credits: transaction.credits,
+                planId: transaction.planId
+            },
+            userCredits: updatedUser.credits
+        });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+//API to get all transactions for a user (for debugging)
+export const getUserTransactions = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        
+        const transactions = await Transaction.find({ userId }).sort({ createdAt: -1 });
+        
+        return res.json({ 
+            success: true, 
+            transactions: transactions.map(t => ({
+                id: t._id,
+                planId: t.planId,
+                amount: t.amount,
+                credits: t.credits,
+                isPaid: t.isPaid,
+                createdAt: t.createdAt
+            }))
+        });
+
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
