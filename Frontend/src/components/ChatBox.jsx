@@ -16,6 +16,11 @@ const ChatBox = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    try {
+      
+    } catch (error) {
+      
+    }
     if (!prompt) return;
 
     setLoading(true);
