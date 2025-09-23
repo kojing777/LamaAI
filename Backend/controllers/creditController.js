@@ -1,4 +1,5 @@
-import Transaction from "../models/Transaction.js";
+import Transaction from "../models/Transaction.js"
+import Stripe from "stripe";
 
 
 const plans = [
@@ -34,7 +35,7 @@ export const getPlans = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 //exporting plans for external use
 export const purchasePlan = async (req, res) => {
     try {
@@ -52,10 +53,37 @@ export const purchasePlan = async (req, res) => {
             credits: plan.credits,
             isPaid: false
         });
-        
-        res.json({ success: true, message: "Plan purchased successfully", transaction });
+
+        const {origin} = req.headers;
+
+        const session = await stripe.checkout.sessions.create({
+
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        unit_amount: plan.price * 100,
+                        product_data: {
+                            name: plan.name,
+
+                        },
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: `${origin}/loading`,
+            cancel_url: `${origin}`,
+            metadata: {
+                transactionId: transaction._id.toString(),
+                appId:'quickgpt'
+            },
+            expires_at: Math.floor(Date.now() / 1000) + 30 * 60 // 30 minutes from now
+        });
+
+        res.json({ success: true,url: session.url});
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
-    
+
 }
