@@ -15,9 +15,13 @@ const ChatBox = () => {
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmit = (e) => {
-    e.preventDefault();
+   
     try {
-      
+       e.preventDefault();
+       if (!user) {
+         alert("Please login to continue");
+         return;
+       }
     } catch (error) {
       
     }
