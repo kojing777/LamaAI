@@ -4,7 +4,7 @@ import { protect } from '../middlewares/auth.js';
 
 const creditsRouter = express.Router();
 
-creditsRouter.post('/purchase', getPlans);
-creditsRouter.get('/plans', protect, purchasePlan);
+creditsRouter.get('/plan', getPlans);
+creditsRouter.post('/purchase', protect, purchasePlan);
 
 export default creditsRouter;
