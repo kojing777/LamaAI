@@ -58,6 +58,8 @@ export const AppContextProvider = ({ children }) => {
         setChats(data.chats);
 
         //if no chat exists create a new chat and set it as selected chat
+
+        //we can change this to last chat instead of first chat
         if (data.chats.length === 0) {
           await createNewChat();
           return fetchUsersChats();
