@@ -24,7 +24,7 @@ export const StripeWebhook = async (req, res) => {
 
                 const session = sessionList.data[0];
                 const { transactionId, appId } = session.metadata;
-                if (appId !== 'quickgpt') {
+                if (appId === 'quickgpt') {
                     const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false });
 
                     //update credits in user account and mark transaction as paid
@@ -35,7 +35,7 @@ export const StripeWebhook = async (req, res) => {
                     await transaction.save();
                 }
                 else {
-                    return response.json({ received: true, message: 'Ignored event: Invalid App ID' });
+                    return res.json({ received: true, message: 'Ignored event: Invalid App ID' });
                 }
                 break;
             default:

@@ -87,3 +87,17 @@ export const purchasePlan = async (req, res) => {
     }
 
 }
+
+//API controller to get transaction status
+export const checkTransactionStatus = async (req, res) => {
+    try {
+        const { transactionId } = req.params;
+        const transaction = await Transaction.findById(transactionId);
+        if (!transaction) {
+            return res.status(404).json({ success: false, message: "Transaction not found" });
+        }
+        res.json({ success: true, isPaid: transaction.isPaid });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
