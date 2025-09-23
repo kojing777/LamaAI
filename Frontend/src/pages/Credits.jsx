@@ -1,19 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { dummyPlans } from "../assets/assets";
+import { useEffect, useState, useCallback } from "react";
 import Loading from "../pages/Loading";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Credits = () => {
   const [plans, setPlans] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { token, axios } = useAppContext();
 
-  const fetchPlans = async () => {
-    setPlans(dummyPlans);
+ const [loading, setLoading] = useState(true);
+
+const fetchPlans = useCallback(async () => {
+  try {
+    const { data } = await axios.get("/api/credit/plan", {
+      headers: { Authorization: token },
+    });
+    if (data.success) {
+      setPlans(data.plans);
+    } else {
+      toast.error(data.message || "Failed to fetch plans");
+    }
+  } catch (error) {
+    toast.error(error.message || "An error occurred while fetching plans");
+  } finally {
     setLoading(false);
-  };
+  }
+}, [axios, token]);
+
 
   useEffect(() => {
     fetchPlans();
-  }, []);
+  }, [fetchPlans]);
 
   if (loading) {
     return <Loading />;
