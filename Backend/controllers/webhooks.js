@@ -35,7 +35,7 @@ export const StripeWebhook = async (req, res) => {
                     await transaction.save();
                 }
                 else {
-                    return response.json({ received: true, 'Ignored event': "Invalid App ID" });
+                    return response.json({ received: true, message: 'Ignored event: Invalid App ID' });
                 }
                 break;
             default:
