@@ -14,42 +14,39 @@ export const StripeWebhook = async (req, res) => {
         return res.status(400).send(`Webhook Error: ${error.message}`);
     }
 
-    console.log('Stripe event received:', JSON.stringify(event, null, 2));
-
     try {
         switch (event.type) {
-            case 'checkout.session.completed':
-                const session = event.data.object;
-                const { transactionId, appId } = session.metadata;
-                console.log(`Processing checkout.session.completed for transactionId: ${transactionId} and appId: ${appId}`);
+            case 'payment_intent.succeeded':{
+                const paymentIntent = event.data.object;
+                const sessionList = await stripe.checkout.sessions.list({
+                    payment_intent: paymentIntent.id,
+                });
 
+                const session = sessionList.data[0];
+                const { transactionId, appId } = session.metadata;
 
                 if (appId === 'quickgpt') {
                     const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false });
 
-                    if (transaction) {
-                        console.log('Transaction found:', transaction._id);
-                        // Update credits in user account
-                        await User.updateOne({ _id: transaction.userId }, { $inc: { credits: transaction.credits } });
-                        console.log('User credits updated.');
+                    //update credits in user account and mark transaction as paid
+                    await User.updateOne({ _id: transaction.userId }, { $inc: { credits: transaction.credits } });
 
-                        // Mark transaction as paid
-                        transaction.isPaid = true;
-                        await transaction.save();
-                        console.log('Transaction marked as paid.');
-                    } else {
-                        console.log('Transaction not found or already paid for transactionId:', transactionId);
-                    }
-                } else {
-                    console.log(`Ignored event: Invalid App ID. Expected 'quickgpt', got '${appId}'`);
+                    //mark transaction as paid
+                    transaction.isPaid = true;
+                    await transaction.save();
+                }
+                else {
+                    return response.json({ received: true, message: 'Ignored event: Invalid App ID' });
                 }
                 break;
+            }
             default:
                 console.log('Unhandled event type', event.type);
         }
+    
         res.json({ received: true });
     } catch (error) {
-        console.error(`Error handling webhook event: ${error.message}`, error);
+        console.error(`Error handling webhook event: ${error.message}`);
         return res.status(500).send(`Webhook Error: ${error.message}`);
     }
 }
