@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyChats } from "./../assets/assets";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -49,6 +48,43 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const createNewChatAfterLogin = async (authToken) => {
+    try {
+      navigate("/");
+      
+      // Fetch existing chats
+      const { data } = await axios.get("/api/chat/get", {
+        headers: { Authorization: authToken },
+      });
+      
+      if (data.success) {
+        setChats(data.chats);
+        
+        if (data.chats.length === 0) {
+          // New user - create a new chat
+          await axios.get("/api/chat/create", {
+            headers: { Authorization: authToken },
+          });
+          
+          // Fetch chats again after creating new one
+          const { data: newData } = await axios.get("/api/chat/get", {
+            headers: { Authorization: authToken },
+          });
+          
+          if (newData.success && newData.chats.length > 0) {
+            setChats(newData.chats);
+            setSelectedChat(newData.chats[newData.chats.length - 1]);
+          }
+        } else {
+          // Existing user - redirect to most recent chat
+          setSelectedChat(data.chats[data.chats.length - 1]);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const fetchUsersChats = async () => {
     try {
       const { data } = await axios.get("/api/chat/get", {
@@ -57,14 +93,13 @@ export const AppContextProvider = ({ children }) => {
       if (data.success) {
         setChats(data.chats);
 
-        //if no chat exists create a new chat and set it as selected chat
-
-        //we can change this to last chat instead of first chat
+        // If no chats exist, create a new chat
         if (data.chats.length === 0) {
           await createNewChat();
           return fetchUsersChats();
         } else {
-          setSelectedChat(data.chats[0]);
+          // Always select the most recent chat (regardless of message content)
+          setSelectedChat(data.chats[data.chats.length - 1]);
         }
       } else {
         toast.error(data.message);
@@ -114,6 +149,7 @@ export const AppContextProvider = ({ children }) => {
     token,
     setToken,
     createNewChat,
+    createNewChatAfterLogin,
     fetchUsersChats,
     loadingUser,
     fetchUser,
