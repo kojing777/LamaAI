@@ -20,7 +20,50 @@ const App = () => {
   if (pathname === "/loading" || loadingUser) return <Loading />;
   return (
     <>
-      <Toaster />
+      <Toaster
+        position="center-top"
+        toastOptions={{
+          // Default style for all toasts
+          style: {
+            background: "linear-gradient(to right, #242124, #000000)",
+            color: "#fff",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            fontFamily: "Outfit, sans-serif",
+            fontSize: "14px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
+          },
+          // Success toast style (sidebar gradient)
+          success: {
+            iconTheme: {
+              primary: "#8b46ff", // matches gradient start
+              secondary: "#ffffff",
+            },
+            style: {
+              background: "linear-gradient(to right, #8b46ff, #4d7fff)",
+              color: "#fff",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+            },
+          },
+          // Error toast style (red gradient)
+          error: {
+            iconTheme: {
+              primary: "#ef4444", // red
+              secondary: "#ffffff",
+            },
+            style: {
+              background: "linear-gradient(to right, #ef4444, #dc2626)",
+              color: "#fff",
+              borderRadius: "12px",
+              padding: "12px 16px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+            },
+          },
+        }}
+      />
+
       {!isMenuOpen && (
         <img
           src={assets.menu_icon}

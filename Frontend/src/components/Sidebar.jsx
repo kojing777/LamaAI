@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
-import { IoSearch } from "react-icons/io5";
+import {
+  IoSearch,
+  IoAdd,
+  IoMoon,
+  IoSunny,
+  IoImages,
+  IoDiamond,
+  IoPerson,
+  IoClose,
+  IoLogOutOutline,
+  IoTrash,
+} from "react-icons/io5";
 import moment from "moment";
 import toast from "react-hot-toast";
+import Logo from "./Logo";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
@@ -24,6 +35,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [chatToDelete, setChatToDelete] = useState(null);
+  const [search, setSearch] = useState("");
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -59,53 +71,80 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
     }
   };
 
-  const [search, setSearch] = useState("");
+  // Filter chats based on search
+  const filteredChats = chats.filter((chat) =>
+    chat.messages[0]
+      ? chat.messages[0]?.content.toLowerCase().includes(search.toLowerCase())
+      : chat.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
+      {/* Mobile Overlay */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
       <div
-        className={`flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-r border-[#80609f]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${
-          !isMenuOpen && "max-md:-translate-x-full"
+        className={`flex flex-col h-screen w-80 min-w-80 p-6 dark:bg-gradient-to-br from-[#1a0b2e] via-[#2d1b4e] to-[#1a0b2e] bg-white border-r border-[#80609f]/20 backdrop-blur-3xl transition-all duration-300 ease-in-out fixed md:relative z-50 shadow-2xl md:shadow-none ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        {/* logo */}
-        <img
-          src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
-          alt=""
-          className="w-full max-w-48"
-        />
-        {/* new chat button  */}
+        {/* Close Button - Mobile Only */}
         <button
-          onClick={createNewChat}
-          className="flex justify-center items-center w-full py-2 mt-10 text-white bg-gradient-to-r from-[#a456f7] to-[#3d81f6] text-sm rounded-md cursor-pointer"
+          onClick={() => setIsMenuOpen(false)}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 dark:bg-black/20 rounded-full md:hidden hover:scale-110 transition-transform"
         >
-          <span className="mr-2 text-xl">+</span> New Chat
+          <IoClose className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
 
-        {/* search conversation */}
-        <div className="flex items-center gap-2 p-3 mt-4 border border-gray-600 dark:border-white/20 rounded-md">
-          <IoSearch className="w-4 dark:invert" />
+        {/* Logo Section */}
+        <div className="flex items-center justify-center mb-8 pt-4 pr-14">
+          <Logo />
+        </div>
+
+        {/* New Chat Button */}
+        <button
+          onClick={createNewChat}
+          className="flex items-center justify-center w-full py-3.5 mb-6 text-white bg-gradient-to-r from-[#8b46ff] to-[#4d7fff] hover:from-[#7d3cf7] hover:to-[#4272f5] text-sm font-medium rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+        >
+          <IoAdd className="w-5 h-5 mr-2 transition-transform " />
+          New Chat
+        </button>
+
+        {/* Search Conversation */}
+        <div className="relative mb-6 group">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <IoSearch className="w-4 h-4 text-gray-400 group-focus-within:text-[#8b46ff]" />
+          </div>
           <input
             onChange={(e) => setSearch(e.target.value)}
             value={search}
             type="text"
-            placeholder="Search Conversation"
-            className="text-xs placeholder:text-gray-400 outline-none"
+            placeholder="Search conversations..."
+            className="w-full pl-10 pr-4 py-3 text-sm bg-white/80 dark:bg-black/30 border border-gray-200 dark:border-white/15 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#8b46ff]/50 focus:border-transparent transition-all duration-300"
           />
         </div>
 
-        {/* Recent Chats */}
-        {chats.length > 0 && <p className="mt-4 text-sm">Recent Chats</p>}
-        <div className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
-          {chats
-            .filter((chat) =>
-              chat.messages[0]
-                ? chat.messages[0]?.content
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
-                : chat.name.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((chat) => (
+        {/* Recent Chats Section */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {chats.length > 0 && (
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                Recent Chats
+              </p>
+              <span className="bg-[#8b46ff]/10 text-[#8b46ff] text-xs px-2 py-1 rounded-full">
+                {filteredChats.length}
+              </span>
+            </div>
+          )}
+
+          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#8b46ff]/30 scrollbar-track-transparent hover:scrollbar-thumb-[#8b46ff]/50 space-y-2 pr-2">
+            {filteredChats.map((chat) => (
               <div
                 onClick={() => {
                   navigate("/");
@@ -113,155 +152,195 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                   setIsMenuOpen(false);
                 }}
                 key={chat._id}
-                className="p-2 px-4 dark:bg-[#57317c]/10 border border-gray-300 dark:border-[#80609f]/15 rounded-md cursor-pointer flex justify-between group"
+                className="group p-3 bg-white/50 dark:bg-[#57317c]/15 border border-gray-200/50 dark:border-[#80609f]/20 rounded-xl cursor-pointer hover:bg-white/80 dark:hover:bg-[#57317c]/25 hover:border-[#8b46ff]/30 hover:shadow-md transition-all duration-300 flex items-start justify-between"
               >
-                <div className="truncate w-full">
-                  <p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate leading-tight">
                     {chat.messages.length > 0
-                      ? chat.messages[0].content.slice(0, 32)
+                      ? chat.messages[0].content.slice(0, 36) +
+                        (chat.messages[0].content.length > 36 ? "..." : "")
                       : chat.name}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-[#b1a6c0]">
+                  <p className="text-xs text-gray-500 dark:text-[#b1a6c0] mt-1">
                     {moment(chat.updatedAt).fromNow()}
                   </p>
                 </div>
 
-                <img
-                  src={assets.bin_icon}
+                <button
                   onClick={(e) => handleDeleteClick(e, chat._id)}
-                  alt=""
-                  className="hidden group-hover:block w-4 cursor-pointer not-dark:invert"
-                />
+                  className="opacity-0 group-hover:opacity-100 ml-2 p-1.5 hover:bg-red-500/10 rounded-lg transition-all duration-300 hover:scale-110"
+                >
+                  <IoTrash className="w-3.5 h-3.5 text-red-500" />
+                </button>
               </div>
             ))}
-        </div>
 
-        {/* Community images */}
-        <div
-          onClick={() => {
-            navigate("/community");
-            setIsMenuOpen(false);
-          }}
-          className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
-        >
-          <img
-            src={assets.gallery_icon}
-            className="w-4.5 not-dark:invert"
-            alt=""
-          />
-          <div className="flex flex-col text-sm">
-            <p>Community Images</p>
+            {filteredChats.length === 0 && chats.length > 0 && (
+              <div className="text-center py-8">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  No conversations found
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Credit Purchase Option */}
-        <div
-          onClick={() => {
-            navigate("/credits");
-            setIsMenuOpen(false);
-          }}
-          className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-105 transition-all"
-        >
-          <img src={assets.diamond_icon} className="w-4.5 dark:invert" alt="" />
-          <div className="flex flex-col text-sm">
-            <p>Credits : {user?.credits}</p>
-            <p className="text-sm text-gray-500">
-              Purchase Credits to use Elyra
-            </p>
+        {/* Bottom Navigation Section */}
+        <div className="space-y-3 pt-4 border-t border-gray-200/50 dark:border-white/10">
+          {/* Community Images */}
+          <div
+            onClick={() => {
+              navigate("/community");
+              setIsMenuOpen(false);
+            }}
+            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-white/50 dark:hover:bg-black/20 transition-all duration-300 group hover:scale-[1.02] bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10"
+          >
+            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg group-hover:scale-100 transition-transform">
+              <IoImages className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex flex-col flex-1">
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                Community Images
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Explore shared creations
+              </p>
+            </div>
+          </div>
+
+          {/* Credit Purchase */}
+          <div
+            onClick={() => {
+              navigate("/credits");
+              setIsMenuOpen(false);
+            }}
+            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-white/50 dark:hover:bg-black/20 transition-all duration-300 group hover:scale-[1.02] bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10"
+          >
+            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg group-hover:scale-100 transition-transform">
+              <IoDiamond className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex flex-col flex-1">
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                Credits:{" "}
+                <span className="text-[#8b46ff] font-bold">
+                  {user?.credits || 0}
+                </span>
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Purchase to use Lama
+              </p>
+            </div>
+          </div>
+
+          {/* Dark Mode Toggle */}
+          <div className="flex items-center justify-between p-3 rounded-xl bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg">
+                {theme === "dark" ? (
+                  <IoMoon className="w-4 h-4 text-purple-500" />
+                ) : (
+                  <IoSunny className="w-4 h-4 text-orange-500" />
+                )}
+              </div>
+              <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                Dark Mode
+              </span>
+            </div>
+            <label className="relative inline-flex cursor-pointer">
+              <input
+                onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+                type="checkbox"
+                className="sr-only peer"
+                checked={theme === "dark"}
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-focus:ring-2 peer-focus:ring-[#8b46ff]/50 rounded-full peer-checked:bg-gradient-to-r peer-checked:from-[#8b46ff] peer-checked:to-[#4d7fff] transition-all duration-300"></div>
+              <span className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5 shadow-md"></span>
+            </label>
+          </div>
+
+          {/* User Account */}
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-[#8b46ff]/10 to-[#4d7fff]/10 border border-[#8b46ff]/20 group">
+            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-[#8b46ff] to-[#4d7fff] rounded-full">
+              <IoPerson className="w-5 h-5 text-white" />
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                {user ? user.name : "Guest User"}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                {user ? user.email : "Log in to your account"}
+              </p>
+            </div>
+
+            {user && (
+              <button
+                onClick={() => setShowLogoutModal(true)}
+                className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg"
+              >
+                <IoLogOutOutline className="w-4 h-4 text-white" />
+              </button>
+            )}
           </div>
         </div>
-
-        {/* dark mode toggle */}
-        <div className="flex items-center justify-between gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md ">
-          <div className="flex items-center  gap-2 text-sm">
-            <img
-              src={assets.theme_icon}
-              className="w-4 not-dark:invert"
-              alt=""
-            />
-            <p>Dark Mode</p>
-          </div>
-          <label className="relative inline-flex cursor-pointer ">
-            <input
-              onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-              type="checkbox"
-              className="sr-only peer"
-              checked={theme === "dark"}
-            />
-            <div className="w-9 h-5 bg-gray-400 rounded-full peer-checked:bg-purple-600 transition-all"></div>
-            <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4"></span>
-          </label>
-        </div>
-
-        {/* user account */}
-        <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group">
-          <img src={assets.user_icon} className="w-7 rounded-full" alt="" />
-
-          <p className="flex-1 text-sm dark:text-primary truncate">
-            {user ? user.name : "Log in your account"}
-          </p>
-          {user && (
-            <img
-              onClick={() => setShowLogoutModal(true)}
-              className="h-5 cursor-pointer hidden not-dark:invert group-hover:block"
-              src={assets.logout_icon}
-            />
-          )}
-        </div>
-
-        <img
-          onClick={() => setIsMenuOpen(false)}
-          src={assets.close_icon}
-          className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert"
-          alt="Close"
-        />
       </div>
 
-      {/* === Modal is OUTSIDE the sidebar container, so it will overlay the whole page === */}
+      {/* Modals */}
       {showLogoutModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg max-w-sm w-full text-center">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
-              Are you sure you want to log out?
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <IoLogOutOutline className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
+              Log Out?
             </h2>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => {
-                  logout();
-                  setShowLogoutModal(false);
-                }}
-                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-              >
-                Yes, Logout
-              </button>
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
+              Are you sure you want to log out of your account?
+            </p>
+            <div className="flex gap-3">
               <button
                 onClick={() => setShowLogoutModal(false)}
-                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg text-gray-800 dark:text-gray-200"
+                className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition-all duration-300"
               >
                 Cancel
+              </button>
+              <button
+                onClick={logout}
+                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Log Out
               </button>
             </div>
           </div>
         </div>
       )}
+
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg max-w-sm w-full text-center">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
-              Are you sure you want to delete this chat?
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
+            <div className="w-12 h-12 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <IoTrash className="w-6 h-6 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
+              Delete Chat?
             </h2>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={confirmDeleteChat}
-                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-              >
-                Yes, Delete
-              </button>
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-6">
+              This action cannot be undone. The chat will be permanently
+              deleted.
+            </p>
+            <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg text-gray-800 dark:text-gray-200"
+                className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition-all duration-300"
               >
                 Cancel
+              </button>
+              <button
+                onClick={confirmDeleteChat}
+                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Delete
               </button>
             </div>
           </div>
