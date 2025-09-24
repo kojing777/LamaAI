@@ -3,11 +3,11 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import Message from "./Message";
 import toast from "react-hot-toast";
-import Logo from "./Logo"; // ✅ your logo component
+import Logo from "./Logo";
 
 const ChatBox = () => {
   const containerRef = useRef(null);
-  const { selectedChat, theme, user, axios, setUser, token } = useAppContext();
+  const { selectedChat, user, axios, setUser, token } = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -81,25 +81,20 @@ const ChatBox = () => {
 
   return (
     <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">
-      {/* chat messages */}
       <div ref={containerRef} className="flex-1 overflow-y-scroll">
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-4 text-primary">
-            {/* ✅ Bigger Logo */}
-            {/* Logo Section - Even Bigger */}
             <div className="mb-2 transform scale-150">
               <Logo />
             </div>
             <p className="mt-6 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
-             How can I help ?
+              How can I help ?
             </p>
           </div>
         )}
         {messages.map((message, index) => (
           <Message key={index} Message={message} />
         ))}
-
-        {/* loading dots */}
         {loading && (
           <div className="loader flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
@@ -121,7 +116,6 @@ const ChatBox = () => {
         </label>
       )}
 
-      {/* prompt input box */}
       <form
         onSubmit={onSubmit}
         className="bg-primary/20 dark:bg-[#57317c]/30 border border-primary dark:border-[#80609f]/30 
