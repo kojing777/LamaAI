@@ -43,6 +43,9 @@ export const AppContextProvider = ({ children }) => {
       });
 
       if (data.success && data.chat) {
+        // Show success toast
+        toast.success("New chat created successfully!");
+
         // Fetch updated chats list
         const { data: chatsData } = await axios.get("/api/chat/get", {
           headers: { Authorization: token },
@@ -57,10 +60,13 @@ export const AppContextProvider = ({ children }) => {
           );
           if (newChat) {
             setSelectedChat(newChat);
+            // Navigate to home route to ensure user is on the chat interface
+            navigate("/");
           } else {
             // fallback: select the most recent chat
             if (chatsData.chats.length > 0) {
               setSelectedChat(chatsData.chats[chatsData.chats.length - 1]);
+              navigate("/");
             }
           }
         }
