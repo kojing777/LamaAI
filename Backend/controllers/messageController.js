@@ -13,6 +13,7 @@ export const textMessageController = async (req, res) => {
             return res.status(403).json({ success: false, message: "Credit pugena raja" });
         }
         const { chatId, prompt } = req.body;
+        
         // Process the text message (e.g., save to database, send to AI service, etc.)
         // For demonstration, we'll just return the received message
 

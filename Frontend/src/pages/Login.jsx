@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { axios, setToken, createNewChatAfterLogin } = useAppContext();
+  const { axios, setToken } = useAppContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +24,6 @@ const Login = () => {
             ? "Login successful!"
             : "Account created successfully!"
         );
-        
-        // Create a new chat after successful login and navigate to it
-        await createNewChatAfterLogin(data.token);
       } else {
         toast.error(data.message);
       }

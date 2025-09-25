@@ -19,6 +19,7 @@ const ChatBox = () => {
     try {
       e.preventDefault();
       if (!user) return toast("Please login to continue");
+      if (!selectedChat) return toast("Please select or create a chat first");
       setLoading(true);
 
       const promptCopy = prompt;
@@ -82,7 +83,16 @@ const ChatBox = () => {
   return (
     <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">
       <div ref={containerRef} className="flex-1 overflow-y-scroll">
-        {messages.length === 0 && (
+        {!selectedChat ? (
+          <div className="h-full flex flex-col items-center justify-center gap-4 text-primary">
+            <div className="mb-2 transform scale-150">
+              <Logo />
+            </div>
+            <p className="mt-6 text-2xl sm:text-4xl text-center text-gray-400 dark:text-white">
+              Please create or select a chat to start messaging
+            </p>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center gap-4 text-primary">
             <div className="mb-2 transform scale-150">
               <Logo />
@@ -91,7 +101,7 @@ const ChatBox = () => {
               How can I help ?
             </p>
           </div>
-        )}
+        ) : null}
         {messages.map((message, index) => (
           <Message key={index} Message={message} />
         ))}
@@ -137,18 +147,19 @@ const ChatBox = () => {
         {/* Input */}
         <input
           type="text"
-          placeholder="Type your message..."
+          placeholder={selectedChat ? "Type your message..." : "Please create or select a chat first"}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           className="flex-1 w-full text-sm bg-transparent outline-none px-2"
+          disabled={!selectedChat}
           required
         />
 
         {/* Submit Button */}
         <button
-          disabled={loading}
+          disabled={loading || !selectedChat}
           type="submit"
-          className="p-2 rounded-full hover:bg-primary/30 transition-colors"
+          className="p-2 rounded-full hover:bg-primary/30 transition-colors disabled:opacity-50"
         >
           <img
             className="w-6 sm:w-7 cursor-pointer"

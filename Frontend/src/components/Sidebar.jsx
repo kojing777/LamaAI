@@ -117,7 +117,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         </button>
 
         {/* Search Conversation */}
-        <div className="relative mb-6 group">
+        <div className="relative mb-2 group">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <IoSearch className="w-4 h-4 text-gray-400 group-focus-within:text-[#8b46ff]" />
           </div>

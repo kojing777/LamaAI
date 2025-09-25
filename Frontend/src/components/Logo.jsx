@@ -1,10 +1,9 @@
-
-import chatIcon from '../assets/chat.png';
-import ai from '../assets/ai.png';
+import chatIcon from "../assets/technology.png";
+import ai from "../assets/ai.png";
 
 const Logo = () => {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* Icon */}
       <img src={chatIcon} alt="Lama Logo" className="w-12 h-12" />
 

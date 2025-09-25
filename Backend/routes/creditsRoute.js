@@ -7,5 +7,4 @@ const creditsRouter = express.Router();
 creditsRouter.get('/plan', getPlans);
 creditsRouter.post('/purchase', protect, purchasePlan);
 
-
 export default creditsRouter;

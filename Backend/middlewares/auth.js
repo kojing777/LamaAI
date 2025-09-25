@@ -8,8 +8,6 @@ export const protect = async (req, res, next) => {
         const userId = decoded.id;
 
         const user = await User.findById(userId)
-
-
         if (!user) {
             return res.json({ success: false, message: "Not authorized" });
         } req.user = user;
