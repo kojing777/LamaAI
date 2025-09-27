@@ -37,7 +37,7 @@ export const getPlans = async (req, res) => {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 //exporting plans for external use
-// controllers/creditController.js - ENSURING METADATA IS SET
+// controllers/creditController.js - UPDATE THIS PART
 export const purchasePlan = async (req, res) => {
     try {
         const { planId } = req.body;
@@ -57,11 +57,23 @@ export const purchasePlan = async (req, res) => {
             isPaid: false
         });
 
-        console.log('🛒 Created transaction:', transaction._id);
+        console.log('🛒 CREATED TRANSACTION:', transaction._id.toString());
 
         const { origin } = req.headers;
 
-        // Create Stripe checkout session WITH PROPER METADATA
+        // Create metadata - CRITICAL FOR WEBHOOK
+        const metadata = {
+            transactionId: transaction._id.toString(),
+            appId: 'quickgpt',
+            userId: userId.toString(),
+            planId: plan._id,
+            planName: plan.name,
+            credits: plan.credits.toString()
+        };
+
+        console.log('📋 METADATA BEING SET:', metadata);
+
+        // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -70,7 +82,7 @@ export const purchasePlan = async (req, res) => {
                         currency: 'usd',
                         product_data: {
                             name: plan.name,
-                            description: `${plan.credits} credits`
+                            description: `${plan.credits} AI credits`
                         },
                         unit_amount: plan.price * 100,
                     },
@@ -78,31 +90,26 @@ export const purchasePlan = async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: `${origin}/?payment=success&transactionId=${transaction._id}`,
+            success_url: `${origin}/?payment=success&transactionId=${transaction._id}&sessionId={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/?payment=cancelled`,
             customer_email: req.user.email,
-            // CRITICAL: Ensure metadata is properly set
-            metadata: {
-                transactionId: transaction._id.toString(),
-                appId: 'quickgpt',
-                userId: userId.toString(),
-                planName: plan.name
-            },
+            metadata: metadata, // THIS IS CRITICAL
             expires_at: Math.floor(Date.now() / 1000) + 30 * 60
         });
 
-        console.log('🔗 Stripe session created:', session.id);
-        console.log('📋 Session metadata:', session.metadata); // Verify metadata
+        console.log('🔗 STRIPE SESSION CREATED:', session.id);
+        console.log('✅ SESSION METADATA CONFIRMED:', session.metadata);
 
         res.json({ 
             success: true, 
             url: session.url,
             sessionId: session.id,
-            transactionId: transaction._id
+            transactionId: transaction._id,
+            metadata: session.metadata
         });
 
     } catch (error) {
-        console.error('❌ Purchase error:', error);
+        console.error('❌ PURCHASE ERROR:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 }
