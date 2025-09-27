@@ -37,15 +37,18 @@ export const getPlans = async (req, res) => {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 //exporting plans for external use
+// controllers/creditController.js - ENSURING METADATA IS SET
 export const purchasePlan = async (req, res) => {
     try {
         const { planId } = req.body;
         const userId = req.user._id;
         const plan = plans.find(plan => plan._id === planId);
+        
         if (!plan) {
             return res.json({ success: false, message: "Invalid plan ID" });
         }
-        //create a new transaction
+
+        // Create transaction
         const transaction = await Transaction.create({
             userId: userId,
             planId: plan._id,
@@ -54,37 +57,52 @@ export const purchasePlan = async (req, res) => {
             isPaid: false
         });
 
+        console.log('🛒 Created transaction:', transaction._id);
+
         const { origin } = req.headers;
 
-        //create stripe checkout session
+        // Create Stripe checkout session WITH PROPER METADATA
         const session = await stripe.checkout.sessions.create({
-
+            payment_method_types: ['card'],
             line_items: [
                 {
                     price_data: {
                         currency: 'usd',
-                        unit_amount: plan.price * 100,
                         product_data: {
                             name: plan.name,
-
+                            description: `${plan.credits} credits`
                         },
+                        unit_amount: plan.price * 100,
                     },
                     quantity: 1,
                 },
             ],
             mode: 'payment',
             success_url: `${origin}/?payment=success&transactionId=${transaction._id}`,
-            cancel_url: `${origin}`,
+            cancel_url: `${origin}/?payment=cancelled`,
+            customer_email: req.user.email,
+            // CRITICAL: Ensure metadata is properly set
             metadata: {
                 transactionId: transaction._id.toString(),
-                appId: 'quickgpt'
+                appId: 'quickgpt',
+                userId: userId.toString(),
+                planName: plan.name
             },
-            expires_at: Math.floor(Date.now() / 1000) + 30 * 60 // 30 minutes from now
+            expires_at: Math.floor(Date.now() / 1000) + 30 * 60
         });
 
-        res.json({ success: true, url: session.url });
+        console.log('🔗 Stripe session created:', session.id);
+        console.log('📋 Session metadata:', session.metadata); // Verify metadata
+
+        res.json({ 
+            success: true, 
+            url: session.url,
+            sessionId: session.id,
+            transactionId: transaction._id
+        });
+
     } catch (error) {
+        console.error('❌ Purchase error:', error);
         res.status(500).json({ success: false, message: error.message });
     }
-
 }
