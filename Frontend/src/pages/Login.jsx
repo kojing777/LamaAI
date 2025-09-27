@@ -34,8 +34,8 @@ const Login = () => {
   };
 
   return (
-    <div className="rounded-3xl flex items-center justify-center bg-gray-100 ">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 flex flex-col items-center gap-6">
+    <div className="min-h-screen flex items-center justify-center  transition-colors duration-300">
+      <div className="bg-white  rounded-3xl shadow-2xl w-full max-w-sm p-8 flex flex-col items-center gap-6 transition-colors duration-300">
         {/* Logo */}
         <div className="mb-4">
           <Logo />
