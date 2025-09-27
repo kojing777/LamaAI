@@ -1,105 +1,62 @@
-// controllers/messageController.js - USING BOTH SERVICES
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import axios from "axios";
+import openai from "../config/openai.js";
 import imagekit from "../config/imagekit.js";
-import openai from "../config/openai.js"; // Keep this import!
 
-// Text-based AI chat message controller - USING GEMINI
-// controllers/messageController.js - TEXT GENERATION PART
+
+//text-based ai chat maessage controller
 export const textMessageController = async (req, res) => {
     try {
         const userId = req.user._id;
         if (req.user.credits < 1) {
-            return res.status(403).json({ success: false, message: "Insufficient credits" });
+            return res.status(403).json({ success: false, message: "Credit pugena raja" });
         }
-        
         const { chatId, prompt } = req.body;
         
-        const chat = await Chat.findOne({ userId, _id: chatId });
-        if (!chat) {
-            return res.status(404).json({ success: false, message: "Chat not found" });
-        }
+        // Process the text message (e.g., save to database, send to AI service, etc.)
+        // For demonstration, we'll just return the received message
 
-        // Add user message to chat
+        const chat = await Chat.findOne({ userId, _id: chatId });
         chat.messages.push({
             isImage: false,
             role: "user",
             content: prompt,
             timestamp: Date.now()
         });
-
-        // USE REAL GEMINI AI - NOT FALLBACK
-        console.log('Sending to Gemini:', prompt);
-        const response = await openai.chat.completions.create({
-            model: "gemini-pro",
-            messages: [{ role: "user", content: prompt }],
+        const { choices } = await openai.chat.completions.create({
+            model: "gemini-2.0-flash",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
         });
-        
-        const aiMessage = response.choices[0].message;
-        const reply = {
-            isImage: false,
-            role: "assistant",
-            content: aiMessage.content,
-            timestamp: Date.now()
-        };
+        const reply = { ...choices[0].message, timestamp: Date.now(), isImage: false };
+        res.status(200).json({ success: true, reply });
 
-        console.log('Gemini response received:', aiMessage.content);
-
-        // Add AI response to chat
         chat.messages.push(reply);
         await chat.save();
 
-        // Update user credits
         await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
 
-        res.status(200).json({ success: true, reply });
-
     } catch (error) {
-        console.error('Error in textMessageController:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: error.message,
-            error: "Text generation failed. Check Gemini API key." 
-        });
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
-// Free text fallback (if Gemini fails)
-const generateFreeTextResponse = async (prompt) => {
-    const lowerPrompt = prompt.toLowerCase();
-    
-    if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi')) {
-        return "Hello! I'm your AI assistant. How can I help you today?";
-    } else if (lowerPrompt.includes('how are you')) {
-        return "I'm doing great! Ready to help you with anything you need.";
-    } else if (lowerPrompt.includes('thank')) {
-        return "You're welcome! Is there anything else I can help you with?";
-    } else {
-        return `I understand you're asking about "${prompt}". That's an interesting topic! In my AI perspective, this is something worth exploring further.`;
-    }
-}
-
-// Image-based AI chat message controller - USING LOREM PICSUM (FREE)
+//image-based ai chat maessage controller
 export const imageMessageController = async (req, res) => {
     try {
         const userId = req.user._id;
         if (req.user.credits < 2) {
-            return res.status(403).json({ success: false, message: "Insufficient credits. Image generation requires 2 credits." });
+            return res.status(403).json({ success: false, message: "Credit pugena raja" });
         }
-        
-        const { prompt, chatId, isPublished = false } = req.body;
-        
-        if (!prompt || !chatId) {
-            return res.status(400).json({ success: false, message: "Prompt and chatId are required" });
-        }
-
+        const { prompt, chatId, isPublished } = req.body;
         const chat = await Chat.findOne({ userId, _id: chatId });
-        if (!chat) {
-            return res.status(404).json({ success: false, message: "Chat not found" });
-        }
 
-        // Push user message to chat
+        //push user message to chat
         chat.messages.push({
             isImage: false,
             role: "user",
@@ -107,131 +64,59 @@ export const imageMessageController = async (req, res) => {
             timestamp: Date.now()
         });
 
-        // Generate image using FREE Lorem Picsum
-        const imageUrl = await generateLoremPicsumImage(prompt);
-        
-        console.log('Generated Image URL:', imageUrl);
+        //encode prompt
+        const encodedPrompt = encodeURIComponent(prompt);
 
-        // Download and upload to ImageKit
-        let imageResponse;
+        //construct imagekit api generation url
+        const generatedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}/ik-genimg-prompt-/${encodedPrompt}/quickgpt/${Date.now()}.png?tr=w-800,h-800`;
+        console.log('Generated ImageKit URL:', generatedImageUrl);
+
+        let aiImageResponse;
         try {
-            imageResponse = await axios.get(imageUrl, { 
-                responseType: 'arraybuffer',
-                timeout: 30000
-            });
+            aiImageResponse = await axios.get(generatedImageUrl, { responseType: 'arraybuffer' });
+            console.log('AI Image Response Status:', aiImageResponse.status);
         } catch (err) {
-            console.error('Error downloading image:', err.message);
-            return await handleImageFallback(res, prompt, chat, userId, isPublished);
+            console.error('Error fetching image from ImageKit:', err.response ? err.response.data : err.message);
+            return res.status(500).json({ success: false, message: 'Failed to generate image', error: err.response ? err.response.data : err.message });
         }
 
-        const base64Image = Buffer.from(imageResponse.data).toString('base64');
+        //convert to base64
+        let base64Image;
+        try {
+            base64Image = `data:image/png;base64,${Buffer.from(aiImageResponse.data, 'binary').toString('base64')}`;
+        } catch (err) {
+            console.error('Error converting image to base64:', err.message);
+            return res.status(500).json({ success: false, message: 'Failed to convert image to base64', error: err.message });
+        }
 
+        //upload image to imagekit media library
         let uploadResponse;
         try {
             uploadResponse = await imagekit.upload({
                 file: base64Image,
-                fileName: `quickgpt-${Date.now()}.jpg`,
-                folder: '/quickgpt',
-                useUniqueFileName: true
+                fileName: `quickgpt/${Date.now()}.png`,
+                folder: 'quickgpt'
             });
+            console.log('ImageKit Upload Response:', uploadResponse);
         } catch (err) {
-            console.error('ImageKit upload failed:', err);
-            uploadResponse = { url: imageUrl };
+            console.error('Error uploading to ImageKit:', err.message);
+            return res.status(500).json({ success: false, message: 'Failed to upload image to ImageKit', error: err.message });
         }
 
         const reply = {
             isImage: true,
             role: "assistant",
-            content: uploadResponse.url,
             timestamp: Date.now(),
-            isPublished: Boolean(isPublished)
+            isPublished,
+            content: uploadResponse.url
         };
-
-        // Save to database
+        res.status(200).json({ success: true, reply });
         chat.messages.push(reply);
         await chat.save();
+
         await User.updateOne({ _id: userId }, { $inc: { credits: -2 } });
-
-        res.status(200).json({ 
-            success: true, 
-            reply,
-            message: "Image generated successfully!"
-        });
-
     } catch (error) {
-        console.error('Error in imageMessageController:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: "Image generation failed. Please try again."
-        });
-    }
-}
-
-// Lorem Picsum image generation (FREE)
-const generateLoremPicsumImage = (prompt) => {
-    const seed = createSeedFromPrompt(prompt);
-    const style = getImageStyleFromPrompt(prompt);
-    return `https://picsum.photos/800/800?${style}&random=${seed}`;
-}
-
-const createSeedFromPrompt = (prompt) => {
-    let hash = 0;
-    for (let i = 0; i < prompt.length; i++) {
-        const char = prompt.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-    }
-    return Math.abs(hash) + Date.now();
-}
-
-const getImageStyleFromPrompt = (prompt) => {
-    const lowerPrompt = prompt.toLowerCase();
-    
-    if (lowerPrompt.includes('nature') || lowerPrompt.includes('forest')) {
-        return 'grayscale&blur=1';
-    } else if (lowerPrompt.includes('city') || lowerPrompt.includes('urban')) {
-        return 'blur=2';
-    } else if (lowerPrompt.includes('abstract') || lowerPrompt.includes('art')) {
-        return 'grayscale';
-    } else {
-        return Math.random() > 0.5 ? 'blur=1' : '';
-    }
-}
-
-// Fallback function (same as before)
-const handleImageFallback = async (res, prompt, chat, userId, isPublished) => {
-    try {
-        const svgContent = `...`; // Your SVG fallback code
-        const base64Svg = Buffer.from(svgContent).toString('base64');
-        
-        const uploadResponse = await imagekit.upload({
-            file: base64Svg,
-            fileName: `fallback-${Date.now()}.svg`,
-            folder: '/quickgpt',
-            useUniqueFileName: true
-        });
-
-        const reply = {
-            isImage: true,
-            role: "assistant",
-            content: uploadResponse.url,
-            timestamp: Date.now(),
-            isPublished: Boolean(isPublished)
-        };
-
-        chat.messages.push(reply);
-        await chat.save();
-        await User.updateOne({ _id: userId }, { $inc: { credits: -2 } });
-
-        res.status(200).json({ 
-            success: true, 
-            reply,
-            message: "Image generated successfully (fallback mode)!"
-        });
-        
-        return true;
-    } catch (fallbackError) {
-        console.error('Fallback also failed:', fallbackError);
-        throw new Error('Image generation and fallback both failed');
+        console.error('General error in imageMessageController:', error.message);
+        res.status(500).json({ success: false, message: error.message });
     }
 }
