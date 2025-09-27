@@ -6,6 +6,7 @@ import imagekit from "../config/imagekit.js";
 import openai from "../config/openai.js"; // Keep this import!
 
 // Text-based AI chat message controller - USING GEMINI
+// controllers/messageController.js - TEXT GENERATION PART
 export const textMessageController = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -28,36 +29,39 @@ export const textMessageController = async (req, res) => {
             timestamp: Date.now()
         });
 
-        // Use Gemini for intelligent text responses
-        let aiResponse;
-        try {
-            const response = await openai.chat.completions.create({
-                model: "gemini-pro",
-                messages: [{ role: "user", content: prompt }],
-            });
-            aiResponse = response.choices[0].message.content;
-        } catch (error) {
-            console.error('Gemini API failed, using fallback:', error);
-            aiResponse = await generateFreeTextResponse(prompt);
-        }
-
+        // USE REAL GEMINI AI - NOT FALLBACK
+        console.log('Sending to Gemini:', prompt);
+        const response = await openai.chat.completions.create({
+            model: "gemini-pro",
+            messages: [{ role: "user", content: prompt }],
+        });
+        
+        const aiMessage = response.choices[0].message;
         const reply = {
             isImage: false,
             role: "assistant",
-            content: aiResponse,
+            content: aiMessage.content,
             timestamp: Date.now()
         };
 
-        // Add AI response to chat and save
+        console.log('Gemini response received:', aiMessage.content);
+
+        // Add AI response to chat
         chat.messages.push(reply);
         await chat.save();
+
+        // Update user credits
         await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
 
         res.status(200).json({ success: true, reply });
 
     } catch (error) {
         console.error('Error in textMessageController:', error);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ 
+            success: false, 
+            message: error.message,
+            error: "Text generation failed. Check Gemini API key." 
+        });
     }
 }
 

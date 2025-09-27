@@ -1,4 +1,4 @@
-// config/openai.js - KEEP FOR TEXT GENERATION
+// config/openai.js - CORRECT GEMINI SETUP
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -8,14 +8,18 @@ const openai = {
         completions: {
             create: async (params) => {
                 try {
+                    console.log('Gemini Request:', params.messages[0].content);
+                    
                     const model = genAI.getGenerativeModel({ 
-                        model: params.model || "gemini-pro" 
+                        model: "gemini-pro" // Use gemini-pro for text
                     });
                     
                     const prompt = params.messages[0].content;
                     const result = await model.generateContent(prompt);
                     const response = await result.response;
                     const text = response.text();
+                    
+                    console.log('Gemini Response:', text);
                     
                     return {
                         choices: [{
@@ -27,12 +31,12 @@ const openai = {
                     };
                 } catch (error) {
                     console.error('Gemini API error:', error);
-                    // Fallback to simple responses if Gemini fails
+                    // Better fallback
                     return {
                         choices: [{
                             message: {
                                 role: "assistant",
-                                content: `I understand you're asking about "${params.messages[0].content}". That's an interesting topic!`
+                                content: `I encountered an error. Please check your Gemini API key. Your query was: "${params.messages[0].content}"`
                             }
                         }]
                     };
