@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaRegUserCircle } from "react-icons/fa";
 import { useAppContext } from "../context/AppContext";
 import {
   IoSearch,
@@ -90,7 +91,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       {/* Sidebar */}
       <div
-        className={`flex flex-col h-screen w-80 min-w-80 p-6 dark:bg-gradient-to-br from-[#1a0b2e] via-[#2d1b4e] to-[#1a0b2e] bg-white border-r border-[#80609f]/20 backdrop-blur-3xl transition-all duration-300 ease-in-out fixed md:relative z-50 shadow-2xl md:shadow-none ${
+        className={`flex flex-col h-screen w-80 min-w-80 p-6 dark:bg-[#1e293b] bg-[#faf9f6] border-r border-[#80609f]/20 backdrop-blur-3xl transition-all duration-300 ease-in-out fixed md:relative z-50 shadow-2xl md:shadow-none ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -110,7 +111,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         {/* New Chat Button */}
         <button
           onClick={createNewChat}
-          className="flex items-center justify-center w-full py-3.5 mb-6 text-white bg-gradient-to-r from-[#8b46ff] to-[#4d7fff] hover:from-[#7d3cf7] hover:to-[#4272f5] text-sm font-medium rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+          className="flex items-center justify-center w-full border-amber-200 py-3.5 mb-6 text-black bg-[#fffff0] hover:from-[#7d3cf7] hover:to-[#4272f5] text-sm font-medium rounded-xl cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.00] group"
         >
           <IoAdd className="w-5 h-5 mr-2 transition-transform " />
           New Chat
@@ -119,14 +120,14 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         {/* Search Conversation */}
         <div className="relative mb-2 group">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <IoSearch className="w-4 h-4 text-gray-400 group-focus-within:text-[#8b46ff]" />
+            <IoSearch className="w-4 h-4 text-gray-400 group-focus-within:text-gray-500" />
           </div>
           <input
             onChange={(e) => setSearch(e.target.value)}
             value={search}
             type="text"
             placeholder="Search conversations..."
-            className="w-full pl-10 pr-4 py-3 text-sm bg-white/80 dark:bg-black/30 border border-gray-200 dark:border-white/15 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#8b46ff]/50 focus:border-transparent transition-all duration-300"
+            className="w-full pl-10 pr-4 py-3 text-sm bg-[#f8fafc]  dark:bg-black/30 border border-gray-200 dark:border-white/15 rounded-xl placeholder-gray-600 dark:placeholder-gray-400 outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-300"
           />
         </div>
 
@@ -137,7 +138,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
               <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                 Recent Chats
               </p>
-              <span className="bg-[#8b46ff]/10 text-[#8b46ff] text-xs px-2 py-1 rounded-full">
+              <span className="bg-gray-200 text-black text-xs px-2  py-1 rounded-full">
                 {filteredChats.length}
               </span>
             </div>
@@ -152,7 +153,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                   setIsMenuOpen(false);
                 }}
                 key={chat._id}
-                className="group p-3 bg-white/50 dark:bg-[#57317c]/15 border border-gray-200/50 dark:border-[#80609f]/20 rounded-xl cursor-pointer hover:bg-white/80 dark:hover:bg-[#57317c]/25 hover:border-[#8b46ff]/30 hover:shadow-md transition-all duration-300 flex items-start justify-between"
+                className="group p-3 bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 rounded-xl cursor-pointer  dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md transition-all duration-300 flex items-start justify-between"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate leading-tight">
@@ -168,9 +169,9 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
                 <button
                   onClick={(e) => handleDeleteClick(e, chat._id)}
-                  className="opacity-0 group-hover:opacity-100 ml-2 p-1.5 hover:bg-red-500/10 rounded-lg transition-all duration-300 hover:scale-110"
+                  className="opacity-0 group-hover:opacity-100 ml-2 p-1.5 hover:bg-black rounded-lg transition-all duration-300 hover:scale-110"
                 >
-                  <IoTrash className="w-3.5 h-3.5 text-red-500" />
+                  <IoTrash className="w-3.5 h-3.5 text-white" />
                 </button>
               </div>
             ))}
@@ -193,9 +194,9 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
               navigate("/community");
               setIsMenuOpen(false);
             }}
-            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-white/50 dark:hover:bg-black/20 transition-all duration-300 group hover:scale-[1.02] bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10"
+            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md transition-all duration-300 group"
           >
-            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg group-hover:scale-100 transition-transform">
+            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-lg group-hover:scale-100 transition-transform">
               <IoImages className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col flex-1">
@@ -214,15 +215,15 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
               navigate("/credits");
               setIsMenuOpen(false);
             }}
-            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-white/50 dark:hover:bg-black/20 transition-all duration-300 group hover:scale-[1.02] bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10"
+            className="flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md transition-all duration-300 group"
           >
-            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg group-hover:scale-100 transition-transform">
+            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-lg group-hover:scale-100 transition-transform">
               <IoDiamond className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col flex-1">
               <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                 Credits:{" "}
-                <span className="text-[#8b46ff] font-bold">
+                <span className="text-black font-bold">
                   {user?.credits || 0}
                 </span>
               </p>
@@ -233,13 +234,13 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           </div>
 
           {/* Dark Mode Toggle */}
-          <div className="flex items-center justify-between p-3 rounded-xl bg-white/30 dark:bg-black/20 border border-gray-200/50 dark:border-white/10">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-lg">
+              <div className="w-8 h-8 flex items-center justify-center bg-black dark:bg-gray-700 rounded-lg">
                 {theme === "dark" ? (
-                  <IoMoon className="w-4 h-4 text-purple-500" />
+                  <IoMoon className="w-4 h-4 text-black-500" />
                 ) : (
-                  <IoSunny className="w-4 h-4 text-orange-500" />
+                  <IoSunny className="w-4 h-4 text-white" />
                 )}
               </div>
               <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
@@ -259,9 +260,9 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           </div>
 
           {/* User Account */}
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-[#8b46ff]/10 to-[#4d7fff]/10 border border-[#8b46ff]/20 group">
-            <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-[#8b46ff] to-[#4d7fff] rounded-full">
-              <IoPerson className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 hover:bg-white/50 dark:hover:bg-black/20 hover:border-gray-300 hover:shadow-lg hover:scale-101 transition-all duration-300 group">
+            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-full">
+              <FaRegUserCircle className="w-5 h-5 text-white" />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -276,7 +277,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             {user && (
               <button
                 onClick={() => setShowLogoutModal(true)}
-                className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg"
+                className="opacity-0 bg-black group-hover:opacity-100 ml-2 p-1.5 rounded-lg transition-all duration-300 hover:scale-110 w-8 h-8 flex items-center justify-center shadow-sm"
               >
                 <IoLogOutOutline className="w-4 h-4 text-white" />
               </button>
@@ -289,8 +290,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {showLogoutModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <IoLogOutOutline className="w-6 h-6 text-red-600 dark:text-red-400" />
+            <div className="w-12 h-12 mx-auto mb-4 bg-black dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <IoLogOutOutline className="w-6 h-6 text-white dark:text-red-400" />
             </div>
             <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
               Log Out?
@@ -319,8 +320,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <IoTrash className="w-6 h-6 text-red-600 dark:text-red-400" />
+            <div className="w-12 h-12 mx-auto mb-4 bg-black  dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <IoTrash className="w-6 h-6 text-white dark:text-red-400" />
             </div>
             <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
               Delete Chat?

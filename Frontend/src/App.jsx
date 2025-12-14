@@ -72,59 +72,83 @@ const App = () => {
         />
       )}
       <Routes>
-        <Route path="/login" element={
-          user ? (
-            <Navigate to="/" replace />
-          ) : (
-            <div className="bg-gradient-to-b from-[#242124] to-[#000000] h-screen flex items-center justify-center w-screen">
-              <Login />
-            </div>
-          )
-        } />
-        <Route path="/" element={
-          user ? (
-            <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
-              <div className="flex h-screen w-screen">
-                <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-                <ChatBox />
+        <Route
+          path="/login"
+          element={
+            user ? (
+              <Navigate to="/" replace />
+            ) : (
+              <div className="bg-gradient-to-b from-[#242124] to-[#000000] h-screen flex items-center justify-center w-screen">
+                <Login />
               </div>
-            </div>
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } />
-        <Route path="/credits" element={
-          user ? (
-            <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
-              <div className="flex h-screen w-screen">
-                <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-                <Credits />
+            )
+          }
+        />
+        <Route
+          path="/"
+          element={
+            user ? (
+              <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
+                <div className="flex h-screen w-screen">
+                  <Sidebar
+                    isMenuOpen={isMenuOpen}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                  <ChatBox />
+                </div>
               </div>
-            </div>
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } />
-        <Route path="/community" element={
-          user ? (
-            <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
-              <div className="flex h-screen w-screen">
-                <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-                <Community />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/credits"
+          element={
+            user ? (
+              <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
+                <div className="flex h-screen w-screen">
+                  <Sidebar
+                    isMenuOpen={isMenuOpen}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                  <Credits />
+                </div>
               </div>
-            </div>
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/community"
+          element={
+            user ? (
+              <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
+                <div className="flex h-screen w-screen">
+                  <Sidebar
+                    isMenuOpen={isMenuOpen}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                  <Community />
+                </div>
+              </div>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
         {/* Catch-all route */}
-        <Route path="*" element={
-          user ? (
-            <Navigate to="/" replace />
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } />
+        <Route
+          path="*"
+          element={
+            user ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
       </Routes>
     </>
   );
