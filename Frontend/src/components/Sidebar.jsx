@@ -91,7 +91,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       {/* Sidebar */}
       <div
-        className={`flex flex-col h-screen w-80 min-w-80 p-6 dark:bg-[#1e293b] bg-[#faf9f6] border-r border-[#80609f]/20 backdrop-blur-3xl transition-all duration-300 ease-in-out fixed md:relative z-50 shadow-2xl md:shadow-none ${
+        className={`flex flex-col h-screen w-80 min-w-80 p-6 dark:bg-[#1e293c] bg-[#faf9f6] border-r border-[#80609f]/20 backdrop-blur-3xl transition-all duration-300 ease-in-out fixed md:relative z-50 shadow-2xl md:shadow-none ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -169,9 +169,9 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
                 <button
                   onClick={(e) => handleDeleteClick(e, chat._id)}
-                  className="opacity-0 group-hover:opacity-100 ml-2 p-1.5 hover:bg-black rounded-lg transition-all duration-300 hover:scale-110"
+                  className="opacity-0 group-hover:opacity-100 ml-2 p-1.5 bg-black dark:bg-white rounded-lg transition-all duration-300 hover:scale-110"
                 >
-                  <IoTrash className="w-3.5 h-3.5 text-white" />
+                  <IoTrash className="w-3.5 h-3.5  dark:text-black text-white" />
                 </button>
               </div>
             ))}
@@ -196,8 +196,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             }}
             className="flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md transition-all duration-300 group"
           >
-            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-lg group-hover:scale-100 transition-transform">
-              <IoImages className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center bg-black dark:bg-white rounded-lg group-hover:scale-100 transition-transform">
+              <IoImages className="w-5 h-5 dark:text-black text-white" />
             </div>
             <div className="flex flex-col flex-1">
               <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
@@ -217,13 +217,13 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             }}
             className="flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md transition-all duration-300 group"
           >
-            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-lg group-hover:scale-100 transition-transform">
-              <IoDiamond className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center bg-black dark:bg-white rounded-lg group-hover:scale-100 transition-transform">
+              <IoDiamond className="w-5 h-5 dark:text-black text-white" />
             </div>
             <div className="flex flex-col flex-1">
               <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                 Credits:{" "}
-                <span className="text-black font-bold">
+                <span className="text-black dark:text-white font-bold">
                   {user?.credits || 0}
                 </span>
               </p>
@@ -236,11 +236,11 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           {/* Dark Mode Toggle */}
           <div className="flex items-center justify-between p-3 rounded-xl bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 dark:hover:bg-[#57317c]/25 hover:border-gray-300 hover:shadow-md">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 flex items-center justify-center bg-black dark:bg-gray-700 rounded-lg">
+              <div className="w-8 h-8 flex items-center justify-center bg-black dark:bg-white  rounded-lg">
                 {theme === "dark" ? (
-                  <IoMoon className="w-4 h-4 text-black-500" />
+                  <IoMoon className="w-5 h-5 dark:text-black text-white" />
                 ) : (
-                  <IoSunny className="w-4 h-4 text-white" />
+                  <IoSunny className="w-5 h-5  text-white" />
                 )}
               </div>
               <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
@@ -261,8 +261,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
           {/* User Account */}
           <div className="flex items-center gap-3 p-3 rounded-xl bg-[#fffff0] dark:bg-[#57317c]/15 border border-gray-200 dark:border-[#80609f]/20 hover:bg-white/50 dark:hover:bg-black/20 hover:border-gray-300 hover:shadow-lg hover:scale-101 transition-all duration-300 group">
-            <div className="w-10 h-10 flex items-center justify-center bg-black rounded-full">
-              <FaRegUserCircle className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center bg-black dark:bg-white rounded-lg">
+              <FaRegUserCircle className="w-5 h-5 dark:text-black text-white" />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -290,8 +290,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {showLogoutModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-black dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <IoLogOutOutline className="w-6 h-6 text-white dark:text-red-400" />
+            <div className="w-12 h-12 mx-auto mb-4 bg-black dark:bg-white rounded-full flex items-center justify-center">
+              <IoLogOutOutline className="w-6 h-6 text-white dark:text-black" />
             </div>
             <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
               Log Out?
@@ -320,8 +320,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4 border border-white/20">
-            <div className="w-12 h-12 mx-auto mb-4 bg-black  dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <IoTrash className="w-6 h-6 text-white dark:text-red-400" />
+            <div className="w-12 h-12 mx-auto mb-4 bg-black  dark:bg-white rounded-full flex items-center justify-center">
+              <IoTrash className="w-6 h-6 text-white dark:text-black" />
             </div>
             <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200 text-center">
               Delete Chat?
