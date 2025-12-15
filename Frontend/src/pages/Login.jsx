@@ -54,7 +54,7 @@ const Login = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your Name"
-                className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
+                className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:ring-gray-100 transition text-sm sm:text-base"
                 required
               />
             </div>
@@ -68,7 +68,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your Email"
-              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
+              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
               required
             />
           </div>
@@ -81,7 +81,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Your Password"
-              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
+              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
               required
             />
           </div>
@@ -93,7 +93,7 @@ const Login = () => {
               : "Don't have an account? "}
             <span
               onClick={() => setState(state === "login" ? "register" : "login")}
-              className="text-purple-700 dark:text-icon-active font-medium cursor-pointer hover:underline"
+              className="text-gray-700 dark:text-icon-active font-bold cursor-pointer hover:underline"
             >
               {state === "login" ? "Sign Up" : "Login"}
             </span>
@@ -102,7 +102,7 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-icon-active dark:to-icon-active/80 text-white py-2 rounded-lg font-medium shadow-lg hover:scale-105 transition-transform w-full"
+            className="bg-gray-600 dark:bg-icon-active/80 text-white py-2 rounded-lg font-medium shadow-sm hover:scale-101 transition-transform w-full"
           >
             {state === "register" ? "Create Account" : "Login"}
           </button>
