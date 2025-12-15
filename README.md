@@ -1,6 +1,6 @@
 <div align='center'>
   
-# <img width='28' height='30' src='https://res.cloudinary.com/dp27ua535/image/upload/v1759516121/technology_eh05fr.png'/> Lama AI - Intelligent AI Assistant
+# <img width="30" height="30" alt="image" src="https://github.com/user-attachments/assets/20a791b0-5d8a-4e22-bf34-5425c9a64884" />  Lama AI - Intelligent AI Assistant
 </div>
 
 <p align="center">
@@ -23,7 +23,10 @@ A **modern full-stack AI chat application** with **text & image generation** pow
 ## 📸 Preview
 
 <p align="center" width="80%">
-  <img src='https://res.cloudinary.com/dp27ua535/image/upload/v1759515398/Screenshot_2025-10-03_235517_llizgh.png'/>
+  <img src='https://res.cloudinary.com/dp27ua535/image/upload/v1765793898/Screenshot_2025-12-15_154417_opj5jg.png'/>
+  <br>
+  <br>
+  <img src='https://res.cloudinary.com/dp27ua535/image/upload/v1765793898/Screenshot_2025-12-15_154446_wlbcdi.png'/>
   </p>
   
 ---
