@@ -35,7 +35,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xs sm:max-w-sm md:max-w-md p-4 sm:p-6 md:p-8 flex flex-col items-center gap-4 sm:gap-6 transition-colors duration-300">
+      <div className="bg-white dark:bg-dark-card rounded-3xl shadow-2xl w-full max-w-xs sm:max-w-sm md:max-w-md p-4 sm:p-6 md:p-8 flex flex-col items-center gap-4 sm:gap-6 transition-colors duration-300 border border-gray-200 dark:border-dark-hover/30">
         {/* Logo */}
         <div className="mb-4">
           <Logo />
@@ -48,13 +48,13 @@ const Login = () => {
           {/* Name */}
           {state === "register" && (
             <div className="flex flex-col gap-1">
-              <label className="text-gray-600 font-medium text-sm sm:text-base">Name</label>
+              <label className="text-gray-600 dark:text-dark-text-secondary font-medium text-sm sm:text-base">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your Name"
-                className="border border-gray-300 rounded-lg p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-sm sm:text-base"
+                className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
                 required
               />
             </div>
@@ -62,38 +62,38 @@ const Login = () => {
 
           {/* Email */}
           <div className="flex flex-col gap-1">
-            <label className="text-gray-600 font-medium text-sm sm:text-base">Email</label>
+            <label className="text-gray-600 dark:text-dark-text-secondary font-medium text-sm sm:text-base">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your Email"
-              className="border border-gray-300 rounded-lg p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-sm sm:text-base"
+              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
               required
             />
           </div>
 
           {/* Password */}
           <div className="flex flex-col gap-1">
-            <label className="text-gray-600 font-medium text-sm sm:text-base">Password</label>
+            <label className="text-gray-600 dark:text-dark-text-secondary font-medium text-sm sm:text-base">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Your Password"
-              className="border border-gray-300 rounded-lg p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-sm sm:text-base"
+              className="border border-gray-300 dark:border-dark-hover rounded-lg p-2 sm:p-3 bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-icon-active transition text-sm sm:text-base"
               required
             />
           </div>
 
           {/* Toggle Login/Register */}
-          <p className="text-gray-600 text-sm text-center">
+          <p className="text-gray-600 dark:text-dark-text-secondary text-sm text-center">
             {state === "register"
               ? "Already have an account? "
               : "Don't have an account? "}
             <span
               onClick={() => setState(state === "login" ? "register" : "login")}
-              className="text-purple-700 font-medium cursor-pointer hover:underline"
+              className="text-purple-700 dark:text-icon-active font-medium cursor-pointer hover:underline"
             >
               {state === "login" ? "Sign Up" : "Login"}
             </span>
@@ -102,7 +102,7 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 rounded-lg font-medium shadow-lg hover:scale-105 transition-transform w-full"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-icon-active dark:to-icon-active/80 text-white py-2 rounded-lg font-medium shadow-lg hover:scale-105 transition-transform w-full"
           >
             {state === "register" ? "Create Account" : "Login"}
           </button>

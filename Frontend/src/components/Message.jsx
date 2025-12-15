@@ -19,7 +19,7 @@ const Message = ({ Message }) => {
               <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               <p className="text-sm leading-relaxed relative z-10">{Message.content}</p>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 px-1">
+            <span className="text-xs text-gray-500 dark:text-dark-text-tertiary px-1">
               {moment(Message.timestamp).format("h:mm A")}
             </span>
           </div>
@@ -44,29 +44,29 @@ const Message = ({ Message }) => {
           </div>
           <div className="flex flex-col gap-2 max-w-full sm:max-w-2xl flex-1">
             {Message.isImage ? (
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md p-3 sm:p-4 shadow-lg relative overflow-hidden">
+              <div className="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 rounded-2xl rounded-bl-md p-3 sm:p-4 shadow-lg relative overflow-hidden">
                 {/* Decorative corner */}
-                <div className="absolute top-0 left-0 w-6 h-6 bg-gradient-to-br from-[#8b46ff] to-[#4d7fff] rounded-br-full"></div>
+                <div className="absolute top-0 left-0 w-6 h-6 bg-gradient-to-br from-icon-active to-icon-active/80 rounded-br-full"></div>
                 <img
                   src={Message.content}
                   className="w-full max-w-md rounded-lg shadow-md"
                   alt="AI Generated"
                   loading="lazy"
                 />
-                <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs rounded-full backdrop-blur-sm">
+                <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/60 dark:bg-dark-modal/80 text-white dark:text-dark-text-primary text-xs rounded-full backdrop-blur-sm">
                   🖼️ AI Generated
                 </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg relative overflow-hidden">
+              <div className="bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg relative overflow-hidden">
                 {/* Decorative corner */}
-                <div className="absolute top-0 left-0 w-6 h-6 bg-gradient-to-br from-[#8b46ff] to-[#4d7fff] rounded-br-full"></div>
-                <div className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed reset-tw relative z-10">
+                <div className="absolute top-0 left-0 w-6 h-6 bg-gradient-to-br from-icon-active to-icon-active/80 rounded-br-full"></div>
+                <div className="text-sm text-gray-800 dark:text-dark-text-primary leading-relaxed reset-tw relative z-10">
                   <Markdown>{Message.content}</Markdown>
                 </div>
               </div>
             )}
-            <span className="text-xs text-gray-500 dark:text-gray-400 px-1">
+            <span className="text-xs text-gray-500 dark:text-dark-text-tertiary px-1">
               {moment(Message.timestamp).format("h:mm A")}
             </span>
           </div>

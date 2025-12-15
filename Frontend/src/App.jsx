@@ -25,40 +25,43 @@ const App = () => {
         toastOptions={{
           // Default style for all toasts
           style: {
-            background: "linear-gradient(to right, #242124, #000000)",
-            color: "#fff",
+            background: "var(--bg-modal, #0a0f1c)",
+            color: "var(--text-primary, #f8fafc)",
             borderRadius: "12px",
             padding: "12px 16px",
             fontFamily: "Outfit, sans-serif",
             fontSize: "14px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.6)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
           },
-          // Success toast style (sidebar gradient)
+          // Success toast style
           success: {
             iconTheme: {
-              primary: "#8b46ff", // matches gradient start
+              primary: "#60a5fa",
               secondary: "#ffffff",
             },
             style: {
-              background: "linear-gradient(to right, #8b46ff, #4d7fff)",
-              color: "#fff",
+              background: "var(--bg-card, #1e293b)",
+              color: "var(--text-primary, #f8fafc)",
               borderRadius: "12px",
               padding: "12px 16px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              border: "1px solid rgba(96, 165, 250, 0.3)",
             },
           },
-          // Error toast style (red gradient)
+          // Error toast style
           error: {
             iconTheme: {
-              primary: "#ef4444", // red
+              primary: "#f87171",
               secondary: "#ffffff",
             },
             style: {
-              background: "linear-gradient(to right, #ef4444, #dc2626)",
-              color: "#fff",
+              background: "var(--bg-card, #1e293b)",
+              color: "var(--text-primary, #f8fafc)",
               borderRadius: "12px",
               padding: "12px 16px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              border: "1px solid rgba(248, 113, 113, 0.3)",
             },
           },
         }}
@@ -67,7 +70,7 @@ const App = () => {
       {!isMenuOpen && (
         <img
           src={assets.menu_icon}
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden not-dark:invert"
+          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden dark:invert z-50"
           onClick={() => setIsMenuOpen(true)}
         />
       )}
@@ -78,7 +81,7 @@ const App = () => {
             user ? (
               <Navigate to="/" replace />
             ) : (
-              <div className="bg-gradient-to-b from-[#242124] to-[#000000] h-screen flex items-center justify-center w-screen">
+              <div className="bg-gradient-to-b dark:from-dark-primary dark:to-dark-modal from-gray-50 to-gray-100 h-screen flex items-center justify-center w-screen transition-colors duration-300">
                 <Login />
               </div>
             )
@@ -88,7 +91,7 @@ const App = () => {
           path="/"
           element={
             user ? (
-              <div className="dark:bg-gradient-to-b from-[rgb(36,33,36)] to-[#000000] dark:text-white font-outfit">
+              <div className="dark:bg-dark-primary dark:text-dark-text-primary bg-gray-50 font-outfit transition-colors duration-300">
                 <div className="flex h-screen w-screen">
                   <Sidebar
                     isMenuOpen={isMenuOpen}

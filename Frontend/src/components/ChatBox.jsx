@@ -88,7 +88,7 @@ const ChatBox = () => {
             <div className="mb-2 transform scale-150">
               <Logo />
             </div>
-            <p className="mt-6 text-2xl sm:text-4xl text-center text-gray-400 dark:text-white">
+            <p className="mt-6 text-2xl sm:text-4xl text-center text-gray-400 dark:text-dark-text-secondary">
               Please create or select a chat to start messaging
             </p>
           </div>
@@ -97,7 +97,7 @@ const ChatBox = () => {
             <div className="mb-2 transform scale-150">
               <Logo />
             </div>
-            <p className="mt-6 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
+            <p className="mt-6 text-4xl sm:text-6xl text-center text-gray-400 dark:text-dark-text-primary">
               How can I help ?
             </p>
           </div>
@@ -107,19 +107,19 @@ const ChatBox = () => {
         ))}
         {loading && (
           <div className="loader mb-10 flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce [animation-delay:0.15s]"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce [animation-delay:0.3s]"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-icon-active animate-bounce"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-icon-active animate-bounce [animation-delay:0.15s]"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-icon-active animate-bounce [animation-delay:0.3s]"></div>
           </div>
         )}
       </div>
 
       {mode === "image" && (
         <label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
-          <p className="text-xs">Publish Generated Image to Community</p>
+          <p className="text-xs text-gray-600 dark:text-dark-text-secondary">Publish Generated Image to Community</p>
           <input
             type="checkbox"
-            className="cursor-pointer"
+            className="cursor-pointer accent-purple-600 dark:accent-icon-active"
             checked={isPublished}
             onChange={(e) => setIsPublished(e.target.checked)}
           />
@@ -128,16 +128,16 @@ const ChatBox = () => {
 
       <form
         onSubmit={onSubmit}
-        className="bg-primary/20 dark:bg-[#57317c]/30 border border-primary dark:border-[#80609f]/30 
+        className="bg-white/80 dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 
                    rounded-full w-full max-w-2xl px-4 py-2 mx-auto flex gap-3 items-center shadow-sm 
-                   focus-within:ring-2 focus-within:ring-primary/40 transition-all"
+                   focus-within:ring-2 focus-within:ring-purple-500/40 dark:focus-within:ring-icon-active/40 transition-all backdrop-blur-sm"
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600
-                     bg-white dark:bg-purple-900 outline-none cursor-pointer
-                     shadow-sm hover:border-primary focus:border-primary
+          className="text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-dark-hover
+                     bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary outline-none cursor-pointer
+                     shadow-sm hover:border-purple-500 dark:hover:border-icon-active focus:border-purple-500 dark:focus:border-icon-active
                      transition-colors"
         >
           <option value="text"> Text</option>
@@ -150,7 +150,7 @@ const ChatBox = () => {
           placeholder={selectedChat ? "Type your message..." : "Please create or select a chat first"}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          className="flex-1 w-full text-sm bg-transparent outline-none px-2"
+          className="flex-1 w-full text-sm bg-transparent outline-none px-2 text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-gray-400"
           disabled={!selectedChat}
           required
         />
@@ -159,10 +159,10 @@ const ChatBox = () => {
         <button
           disabled={loading || !selectedChat}
           type="submit"
-          className="p-2 rounded-full hover:bg-primary/30 transition-colors disabled:opacity-50"
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-hover transition-colors disabled:opacity-50"
         >
           <img
-            className="w-6 sm:w-7 cursor-pointer"
+            className="w-6 sm:w-7 cursor-pointer dark:invert opacity-80 dark:opacity-90"
             src={loading ? assets.stop_icon : assets.send_icon}
             alt="send"
           />

@@ -12,6 +12,79 @@
 
 @theme {
   --color-primary: #e6ccff;
+  
+  /* 
+   * DARK MODE COLOR SYSTEM
+   * 
+   * Background Colors:
+   * - bg-dark-primary (#0f172a) - Primary Background (Dark Navy)
+   * - bg-dark-card (#1e293b) - Card/Section Background (Lighter Navy)
+   * - bg-dark-hover (#334155) - Hover States (Medium Gray-Blue)
+   * - bg-dark-modal (#0a0f1c) - Modal/Overlay (Almost Black)
+   * 
+   * Text Colors:
+   * - text-dark-primary (#f8fafc) - Primary Text (White)
+   * - text-dark-secondary (#cbd5e1) - Secondary Text (Light Gray)
+   * - text-dark-tertiary (#94a3b8) - Tertiary/Disabled (Gray)
+   * - text-dark-accent (#60a5fa) - Accent Text (Light Blue)
+   * 
+   * Icon Colors:
+   * - text-icon-primary (#cbd5e1) - Primary Icons
+   * - text-icon-active (#60a5fa) - Active Icons
+   * - text-icon-hover (#f8fafc) - Hover Icons
+   * - text-icon-warning (#f87171) - Warning/Error Icons
+   * 
+   * Usage Examples:
+   * - className="dark:bg-dark-primary dark:text-dark-primary"
+   * - className="bg-dark-card dark:hover:bg-dark-hover"
+   * - className="text-icon-primary dark:group-hover:text-icon-hover"
+   */
+  --color-dark-primary: #0f172a;
+  --color-dark-card: #1e293b;
+  --color-dark-hover: #334155;
+  --color-dark-modal: #0a0f1c;
+  
+  --color-dark-text-primary: #f8fafc;
+  --color-dark-text-secondary: #cbd5e1;
+  --color-dark-text-tertiary: #94a3b8;
+  --color-dark-text-accent: #60a5fa;
+  
+  --color-icon-primary: #cbd5e1;
+  --color-icon-active: #60a5fa;
+  --color-icon-hover: #f8fafc;
+  --color-icon-warning: #f87171;
+}
+
+/* CSS Custom Properties for direct CSS access (scoped to dark mode) */
+.dark {
+  /* Dark Mode Background Colors */
+  --bg-primary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-hover: #334155;
+  --bg-modal: #0a0f1c;
+  
+  /* Dark Mode Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-accent: #60a5fa;
+  
+  /* Dark Mode Icon Colors */
+  --icon-primary: #cbd5e1;
+  --icon-active: #60a5fa;
+  --icon-hover: #f8fafc;
+  --icon-warning: #f87171;
+}
+
+/* Global dark mode styles */
+html.dark {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.dark body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 ::-webkit-scrollbar {

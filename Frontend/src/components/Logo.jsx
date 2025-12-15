@@ -12,10 +12,10 @@ const Logo = () => {
 
       {/* Text */}
       <div className="flex flex-col">
-        <span className="text-2xl font-bold text-gray-900 dark:text-white">
+        <span className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary">
           LAMA
         </span>
-        <span className="text-sm text-black dark:text-white">
+        <span className="text-sm text-black dark:text-dark-text-secondary">
           Intelligent Ai Assistant
         </span>
       </div>

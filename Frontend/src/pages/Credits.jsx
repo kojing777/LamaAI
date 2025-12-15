@@ -53,13 +53,13 @@ const Credits = () => {
 
   return (
     <div className="max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-bold text-center mt-10 mb-10 text-gray-800 dark:text-white">
+      <h2 className="text-3xl font-bold text-center mt-10 mb-10 text-gray-800 dark:text-dark-text-primary">
         Choose Your Credits Plan
       </h2>
 
       <div className="flex flex-wrap justify-center gap-8">
         {plans.length === 0 && (
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-gray-600 dark:text-dark-text-secondary">
             No plans available at the moment.
           </p>
         )}
@@ -68,22 +68,22 @@ const Credits = () => {
             key={plan._id}
             className={`border rounded-lg shadow hover:shadow-xl transition-all p-6 min-w-[300px] flex flex-col ${
               plan._id === "pro"
-                ? "bg-purple-50 dark:bg-purple-900 border-purple-400"
-                : "bg-white dark:bg-gray-800 border-gray-300"
+                ? "bg-purple-50 dark:bg-dark-card border-purple-400 dark:border-icon-active/50"
+                : "bg-white dark:bg-dark-card border-gray-300 dark:border-dark-hover/30"
             }`}
           >
             <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+              <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-dark-text-primary">
                 {plan.name}
               </h3>
-              <p className="text-2xl font-bold text-gray-900 dark:text-purple-300 mb-4">
+              <p className="text-2xl font-bold text-gray-900 dark:text-icon-active mb-4">
                 ${plan.price}{" "}
-                <span className="text-sm font-normal text-gray-500 dark:text-gray-300">
+                <span className="text-sm font-normal text-gray-500 dark:text-dark-text-tertiary">
                   / {plan.credits} credits
                 </span>
               </p>
 
-              <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300 text-sm">
+              <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-dark-text-secondary text-sm">
                 {plan.features.map((feature, i) => (
                   <li key={i}>{feature}</li>
                 ))}
@@ -92,7 +92,7 @@ const Credits = () => {
 
             <button
               onClick={() => handlePurchase(plan._id)}
-              className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer"
+              className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 dark:bg-icon-active dark:hover:bg-icon-active/90 dark:active:bg-icon-active/80 text-white font-medium py-2 rounded transition-colors cursor-pointer"
             >
               Buy Now
             </button>
