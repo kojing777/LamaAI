@@ -14,16 +14,22 @@ export const textMessageController = async (req, res) => {
         }
         const { chatId, prompt } = req.body;
         
-        // Process the text message (e.g., save to database, send to AI service, etc.)
-        // For demonstration, we'll just return the received message
+        if (!chatId || !prompt) {
+            return res.status(400).json({ success: false, message: "chatId and prompt are required" });
+        }
 
         const chat = await Chat.findOne({ userId, _id: chatId });
+        if (!chat) {
+            return res.status(404).json({ success: false, message: "Chat not found" });
+        }
+
         chat.messages.push({
             isImage: false,
             role: "user",
             content: prompt,
             timestamp: Date.now()
         });
+        
         const { choices } = await openai.chat.completions.create({
             model: "gemini-2.0-flash",
             messages: [
@@ -33,16 +39,23 @@ export const textMessageController = async (req, res) => {
                 },
             ],
         });
+        
+        if (!choices || !choices[0] || !choices[0].message) {
+            return res.status(500).json({ success: false, message: "Failed to get response from AI" });
+        }
+        
         const reply = { ...choices[0].message, timestamp: Date.now(), isImage: false };
-        res.status(200).json({ success: true, reply });
-
+        
         chat.messages.push(reply);
         await chat.save();
 
         await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
+        
+        res.status(200).json({ success: true, reply });
 
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.error('Error in textMessageController:', error);
+        res.status(500).json({ success: false, message: error.message, error: error.stack });
     }
 }
 
@@ -54,7 +67,15 @@ export const imageMessageController = async (req, res) => {
             return res.status(403).json({ success: false, message: "Credit pugena raja" });
         }
         const { prompt, chatId, isPublished } = req.body;
+        
+        if (!chatId || !prompt) {
+            return res.status(400).json({ success: false, message: "chatId and prompt are required" });
+        }
+        
         const chat = await Chat.findOne({ userId, _id: chatId });
+        if (!chat) {
+            return res.status(404).json({ success: false, message: "Chat not found" });
+        }
 
         //push user message to chat
         chat.messages.push({
