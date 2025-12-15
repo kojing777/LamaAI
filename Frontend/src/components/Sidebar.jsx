@@ -126,7 +126,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           onClick={createNewChat}
           className="flex items-center justify-center w-full py-3.5 mb-6 text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-hover hover:bg-light-hover dark:hover:bg-dark-hover/80 border border-gray-200 dark:border-dark-hover text-sm font-medium rounded-xl cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] group"
         >
-          <IoAdd className="w-5 h-5 mr-2 dark:text-icon-primary transition-transform group-hover:rotate-90" />
+          <IoAdd className="w-5 h-5 mr-2 dark:text-icon-primary transition-transform" />
           New Chat
         </button>
 
