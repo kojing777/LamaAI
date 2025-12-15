@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { RiMenuFill } from "react-icons/ri";
 import { useAppContext } from "../context/AppContext";
 import {
   IoSearch,
@@ -16,6 +17,7 @@ import {
 import moment from "moment";
 import toast from "react-hot-toast";
 import Logo from "./Logo";
+import { assets } from "../assets/assets";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
@@ -81,12 +83,22 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <>
+      {/* Mobile Menu Button (shows when sidebar is closed) */}
+      {!isMenuOpen && (
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          className="md:hidden fixed top-4 left-4 z-50 w-10 h-10 p-2 bg-black dark:bg-white rounded-lg shadow-lg flex items-center justify-center"
+          aria-label="Open menu"
+        >
+          <RiMenuFill className="text-white dark:text-black" />
+        </button>
+      )}
+
       {/* Mobile Overlay */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/60 dark:bg-dark-modal/80 z-40 md:hidden backdrop-blur-sm"
           onClick={() => setIsMenuOpen(false)}
-          
         />
       )}
 

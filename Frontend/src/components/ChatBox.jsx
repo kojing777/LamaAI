@@ -133,16 +133,15 @@ const ChatBox = () => {
       <form
         onSubmit={onSubmit}
         className="bg-light-card/90 dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 
-                   rounded-full w-full max-w-2xl px-4 py-2 mx-auto flex gap-3 items-center shadow-sm 
-                   focus-within:ring-2 focus-within:ring-light-text-accent/40 dark:focus-within:ring-icon-active/40 transition-all backdrop-blur-sm"
+                   rounded-full w-full max-w-2xl px-4 py-2 mx-auto flex gap-2 sm:gap-3 items-center shadow-sm mt-2 sm:mt-4
+                   focus-within:ring-2 focus-within:ring-light-text-accent/40 dark:focus-within:ring-icon-active/40 transition-all backdrop-blur-md"
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm px-3 py-1.5 rounded-xl border border-gray-300 dark:border-dark-hover
+          className="flex-shrink-0 w-20 sm:w-auto text-sm px-3 py-1.5 rounded-xl border border-gray-300 dark:border-dark-hover
                      bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary outline-none cursor-pointer
-                     shadow-sm hover:border-gray-500  focus:border-gray-500 
-                     transition-colors"
+                     shadow-sm hover:border-gray-500  focus:border-gray-500 transition-colors"
         >
           <option value="text"> Text</option>
           <option value="image"> Image</option>
@@ -158,7 +157,7 @@ const ChatBox = () => {
           }
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          className="flex-1 w-full text-sm bg-transparent outline-none px-2 text-light-text-primary dark:text-dark-text-primary placeholder-light-text-tertiary dark:placeholder-gray-400"
+          className="flex-1 w-full text-sm bg-transparent outline-none px-2 py-2 text-light-text-primary dark:text-dark-text-primary placeholder-light-text-tertiary dark:placeholder-gray-400"
           disabled={!selectedChat}
           required
         />
@@ -167,7 +166,7 @@ const ChatBox = () => {
         <button
           disabled={loading || !selectedChat}
           type="submit"
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-hover transition-colors disabled:opacity-50"
+          className="flex-shrink-0 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-hover transition-colors disabled:opacity-50"
           aria-label={loading ? "Stop generation" : "Send message"}
         >
           {!loading ? (
