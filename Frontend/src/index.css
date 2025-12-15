@@ -14,6 +14,39 @@
   --color-primary: #e6ccff;
   
   /* 
+   * LIGHT MODE COLOR SYSTEM
+   * 
+   * Background Colors:
+   * - bg-light-primary (#ffffff) - Primary Background (Pure White)
+   * - bg-light-card (#f8fafc) - Card/Section Background (Off-White)
+   * - bg-light-hover (#f1f5f9) - Hover States (Light Gray)
+   * - bg-light-modal (#ffffff with 90% opacity) - Modal/Overlay
+   * 
+   * Text Colors:
+   * - text-light-primary (#0f172a) - Primary Text (Almost Black)
+   * - text-light-secondary (#475569) - Secondary Text (Dark Gray)
+   * - text-light-tertiary (#94a3b8) - Tertiary/Disabled (Gray)
+   * - text-light-accent (#3b82f6) - Accent Text (Vibrant Blue)
+   * 
+   * Icon Colors:
+   * - icon-light-primary (#475569) - Primary Icons
+   * 
+   * Usage Examples:
+   * - className="bg-light-card text-light-primary"
+   * - className="hover:bg-light-hover"
+   */
+  --color-light-primary: #ffffff;
+  --color-light-card: #f8fafc;
+  --color-light-hover: #f1f5f9;
+  
+  --color-light-text-primary: #0f172a;
+  --color-light-text-secondary: #475569;
+  --color-light-text-tertiary: #94a3b8;
+  --color-light-text-accent: #3b82f6;
+  
+  --color-icon-light-primary: #475569;
+  
+  /* 
    * DARK MODE COLOR SYSTEM
    * 
    * Background Colors:
@@ -55,6 +88,24 @@
   --color-icon-warning: #f87171;
 }
 
+/* CSS Custom Properties for light mode (default) */
+:root {
+  /* Light Mode Background Colors */
+  --bg-primary: #ffffff;
+  --bg-card: #f8fafc;
+  --bg-hover: #f1f5f9;
+  --bg-modal: rgba(255, 255, 255, 0.9);
+  
+  /* Light Mode Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --text-accent: #3b82f6;
+  
+  /* Light Mode Icon Colors */
+  --icon-primary: #475569;
+}
+
 /* CSS Custom Properties for direct CSS access (scoped to dark mode) */
 .dark {
   /* Dark Mode Background Colors */
@@ -76,13 +127,13 @@
   --icon-warning: #f87171;
 }
 
-/* Global dark mode styles */
-html.dark {
+/* Global styles */
+html {
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
 
-html.dark body {
+html body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }

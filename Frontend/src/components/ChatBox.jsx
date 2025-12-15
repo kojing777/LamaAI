@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
 import Message from "./Message";
 import toast from "react-hot-toast";
+import { IoSend } from "react-icons/io5";
+import { FaRegCircleStop } from "react-icons/fa6";
+
 import Logo from "./Logo";
 
 const ChatBox = () => {
@@ -88,7 +90,7 @@ const ChatBox = () => {
             <div className="mb-2 transform scale-150">
               <Logo />
             </div>
-            <p className="mt-6 text-2xl sm:text-4xl text-center text-gray-400 dark:text-dark-text-secondary">
+            <p className="mt-6 text-2xl sm:text-4xl text-center text-light-text-tertiary dark:text-dark-text-secondary">
               Please create or select a chat to start messaging
             </p>
           </div>
@@ -97,7 +99,7 @@ const ChatBox = () => {
             <div className="mb-2 transform scale-150">
               <Logo />
             </div>
-            <p className="mt-6 text-4xl sm:text-6xl text-center text-gray-400 dark:text-dark-text-primary">
+            <p className="mt-6 text-4xl sm:text-6xl text-center text-light-text-secondary dark:text-dark-text-primary">
               How can I help ?
             </p>
           </div>
@@ -116,7 +118,9 @@ const ChatBox = () => {
 
       {mode === "image" && (
         <label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
-          <p className="text-xs text-gray-600 dark:text-dark-text-secondary">Publish Generated Image to Community</p>
+          <p className="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+            Publish Generated Image to Community
+          </p>
           <input
             type="checkbox"
             className="cursor-pointer accent-purple-600 dark:accent-icon-active"
@@ -128,16 +132,16 @@ const ChatBox = () => {
 
       <form
         onSubmit={onSubmit}
-        className="bg-white/80 dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 
+        className="bg-light-card/90 dark:bg-dark-card border border-gray-200 dark:border-dark-hover/30 
                    rounded-full w-full max-w-2xl px-4 py-2 mx-auto flex gap-3 items-center shadow-sm 
-                   focus-within:ring-2 focus-within:ring-purple-500/40 dark:focus-within:ring-icon-active/40 transition-all backdrop-blur-sm"
+                   focus-within:ring-2 focus-within:ring-light-text-accent/40 dark:focus-within:ring-icon-active/40 transition-all backdrop-blur-sm"
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm px-3 py-1.5 rounded-lg border border-gray-300 dark:border-dark-hover
-                     bg-white dark:bg-dark-primary text-gray-900 dark:text-dark-text-primary outline-none cursor-pointer
-                     shadow-sm hover:border-purple-500 dark:hover:border-icon-active focus:border-purple-500 dark:focus:border-icon-active
+          className="text-sm px-3 py-1.5 rounded-xl border border-gray-300 dark:border-dark-hover
+                     bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary outline-none cursor-pointer
+                     shadow-sm hover:border-gray-500  focus:border-gray-500 
                      transition-colors"
         >
           <option value="text"> Text</option>
@@ -147,10 +151,14 @@ const ChatBox = () => {
         {/* Input */}
         <input
           type="text"
-          placeholder={selectedChat ? "Type your message..." : "Please create or select a chat first"}
+          placeholder={
+            selectedChat
+              ? "Type your message..."
+              : "Please create or select a chat first"
+          }
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          className="flex-1 w-full text-sm bg-transparent outline-none px-2 text-gray-900 dark:text-dark-text-primary placeholder-gray-500 dark:placeholder-gray-400"
+          className="flex-1 w-full text-sm bg-transparent outline-none px-2 text-light-text-primary dark:text-dark-text-primary placeholder-light-text-tertiary dark:placeholder-gray-400"
           disabled={!selectedChat}
           required
         />
@@ -160,12 +168,13 @@ const ChatBox = () => {
           disabled={loading || !selectedChat}
           type="submit"
           className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-hover transition-colors disabled:opacity-50"
+          aria-label={loading ? "Stop generation" : "Send message"}
         >
-          <img
-            className="w-6 sm:w-7 cursor-pointer dark:invert opacity-80 dark:opacity-90"
-            src={loading ? assets.stop_icon : assets.send_icon}
-            alt="send"
-          />
+          {!loading ? (
+            <IoSend className="w-6 dark:text-white sm:w-7 cursor-pointer opacity-80 dark:opacity-90" />
+          ) : (
+            <FaRegCircleStop className="w-6 sm:w-7 cursor-pointer dark:invert opacity-80 dark:opacity-90" />
+          )}
         </button>
       </form>
     </div>

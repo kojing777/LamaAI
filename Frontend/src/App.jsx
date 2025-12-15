@@ -81,7 +81,7 @@ const App = () => {
             user ? (
               <Navigate to="/" replace />
             ) : (
-              <div className="bg-gradient-to-b dark:from-dark-primary dark:to-dark-modal from-gray-50 to-gray-100 h-screen flex items-center justify-center w-screen transition-colors duration-300">
+              <div className="bg-light-primary dark:bg-gradient-to-b dark:from-dark-primary dark:to-dark-modal h-screen flex items-center justify-center w-screen transition-colors duration-300">
                 <Login />
               </div>
             )
@@ -91,7 +91,7 @@ const App = () => {
           path="/"
           element={
             user ? (
-              <div className="dark:bg-dark-primary dark:text-dark-text-primary bg-gray-50 font-outfit transition-colors duration-300">
+              <div className="bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary font-outfit transition-colors duration-300">
                 <div className="flex h-screen w-screen">
                   <Sidebar
                     isMenuOpen={isMenuOpen}

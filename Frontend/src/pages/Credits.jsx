@@ -65,10 +65,10 @@ const Credits = () => {
     <div className="max-w-7xl h-full overflow-y-auto mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header Section */}
       <div className="text-center mb-8 sm:mb-12">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-dark-text-primary mb-3 sm:mb-4">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-light-text-primary dark:text-dark-text-primary mb-3 sm:mb-4">
           Choose Your Credits Plan
         </h1>
-        <p className="text-base sm:text-lg text-gray-600 dark:text-dark-text-secondary max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-light-text-secondary dark:text-dark-text-secondary max-w-2xl mx-auto">
           Select the perfect plan for your AI needs. All plans include instant
           access and premium features.
         </p>
@@ -78,7 +78,7 @@ const Credits = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-8 max-w-6xl mx-auto">
         {plans.length === 0 && (
           <div className="col-span-full text-center py-12">
-            <p className="text-lg text-gray-600 dark:text-dark-text-secondary">
+            <p className="text-lg text-light-text-secondary dark:text-dark-text-secondary">
               No plans available at the moment.
             </p>
           </div>
@@ -95,14 +95,14 @@ const Credits = () => {
               key={plan._id}
               className={`group relative flex flex-col rounded-2xl border-2 transition-all duration-300 transform hover:scale-101 hover:-translate-y-1 ${
                 isPro
-                  ? "bg-gradient-to-br from-[#fffff0] to-[#faf9f6] dark:from-dark-card dark:to-dark-hover border-gray-400 dark:border-icon-active/60 shadow-2xl shadow-purple-500/20 dark:shadow-icon-active/20 md:scale-101"
-                  : "bg-[#fffff0] dark:bg-dark-card border-gray-200 dark:border-dark-hover/30 shadow-lg hover:shadow-xl dark:hover:shadow-2xl"
+                  ? "bg-gradient-to-br from-light-card to-light-hover dark:from-dark-card dark:to-dark-hover border-gray-400 dark:border-icon-active/60 shadow-2xl shadow-purple-500/20 dark:shadow-icon-active/20 md:scale-101"
+                  : "bg-light-card dark:bg-dark-card border-gray-200 dark:border-dark-hover/30 shadow-lg hover:shadow-xl dark:hover:shadow-2xl"
               }`}
             >
               {/* Popular Badge */}
               {isPro && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                  <span className="bg-gray-200 dark:bg-dark-hover text-black dark:text-dark-text-secondary text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+                  <span className="bg-light-hover dark:bg-dark-hover text-light-text-primary dark:text-dark-text-secondary text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
                     <IoStar className="w-3 h-3" />
                     Most Popular
                   </span>
@@ -118,7 +118,7 @@ const Credits = () => {
                       className={`text-2xl sm:text-3xl font-bold ${
                         isPro
                           ? "text-purple-900 dark:text-icon-active"
-                          : "text-gray-800 dark:text-dark-text-primary"
+                          : "text-light-text-primary dark:text-dark-text-primary"
                       }`}
                     >
                       {plan.name}
@@ -134,18 +134,18 @@ const Credits = () => {
                       className={`text-4xl sm:text-5xl font-extrabold ${
                         isPro
                           ? "text-purple-900 dark:text-icon-active"
-                          : "text-gray-800 dark:text-dark-text-primary"
+                          : "text-light-text-primary dark:text-dark-text-primary"
                       }`}
                     >
                       ${plan.price}
                     </span>
-                    <span className="text-sm sm:text-base text-gray-500 dark:text-dark-text-tertiary ml-2">
+                    <span className="text-sm sm:text-base text-light-text-tertiary dark:text-dark-text-tertiary ml-2">
                       / {plan.credits} credits
                     </span>
                   </div>
 
                   {/* Price per credit */}
-                  <p className="text-xs sm:text-sm text-gray-500 dark:text-dark-text-tertiary">
+                  <p className="text-xs sm:text-sm text-light-text-tertiary dark:text-dark-text-tertiary">
                     ${pricePerCredit} per credit
                   </p>
                 </div>
@@ -162,7 +162,7 @@ const Credits = () => {
                               : "text-green-600 dark:text-icon-active"
                           }`}
                         />
-                        <span className="text-sm sm:text-base text-gray-700 dark:text-dark-text-secondary leading-relaxed">
+                        <span className="text-sm sm:text-base text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
                           {feature}
                         </span>
                       </li>
@@ -177,7 +177,7 @@ const Credits = () => {
                   className={`w-full py-3 sm:py-3.5 px-6 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-101 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${
                     isPro
                       ? "bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-icon-active dark:to-icon-active/80 hover:from-purple-700 hover:to-indigo-700 dark:hover:from-icon-active/90 dark:hover:to-icon-active/70 text-white shadow-lg shadow-purple-500/30 dark:shadow-icon-active/30"
-                      : "bg-gray-800 dark:bg-dark-hover hover:bg-gray-700 dark:hover:bg-dark-hover/80 text-white shadow-md dark:shadow-lg"
+                      : "bg-light-text-primary dark:bg-dark-hover hover:bg-light-text-secondary dark:hover:bg-dark-hover/80 text-white shadow-md dark:shadow-lg"
                   }`}
                 >
                   {purchasingPlan === plan._id ? (

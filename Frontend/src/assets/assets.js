@@ -1,6 +1,5 @@
 
 import search_icon from "./search_icon.svg";
-import user_icon from "./user_icon.svg";
 import theme_icon from "./theme_icon.svg";
 import send_icon from "./send_icon.svg";
 import stop_icon from "./stop_icon.svg";
@@ -14,7 +13,6 @@ import gallery_icon from "./gallery_icon.svg";
 
 export const assets = {
     search_icon,
-    user_icon,
     theme_icon,
     send_icon,
     stop_icon,

@@ -31,7 +31,7 @@ const Community = () => {
   }
   return (
     <div className="p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-x-scroll">
-      <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-dark-text-primary">
+      <h2 className="text-xl font-semibold mb-6 text-light-text-primary dark:text-dark-text-primary">
         Community Images
       </h2>
 
@@ -42,7 +42,7 @@ const Community = () => {
               href="item.imageUrl"
               key={index}
               target="_blank"
-              className="relative group block rounded-lg overflow-hidden border border-gray-200 dark:border-dark-hover/30 shadow-sm hover:shadow-md dark:hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-dark-card"
+              className="relative group block rounded-lg overflow-hidden border border-gray-200 dark:border-dark-hover/30 shadow-sm hover:shadow-md dark:hover:shadow-lg transition-shadow duration-300 bg-light-card dark:bg-dark-card"
             >
               <img
                 src={item.imageUrl}
@@ -56,7 +56,7 @@ const Community = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-600 dark:text-dark-text-secondary mt-10">
+        <p className="text-center text-light-text-secondary dark:text-dark-text-secondary mt-10">
           No images found.
         </p>
       )}
